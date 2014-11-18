@@ -37,15 +37,17 @@ class PageLang extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'url'], 'required'],
+            [['name'], 'required'],
             [['page_id', 'language_id'], 'integer'],
             [['text'], 'string'],
             [['name'], 'string', 'max' => 100],
             [['title'], 'string', 'max' => 80],
-            [['description', 'image', 'url'], 'string', 'max' => 200],
+            [['description', 'image', 'alias'], 'string', 'max' => 200],
             [['keywords'], 'string', 'max' => 250],
             [['alias'], 'match', 'pattern' => '/^([A-Za-z0-9_-])+$/'],
-            [['alias'], 'unique'],
+            [['alias'], 'unique', 'filter' => function ($query) {
+                return $query->andWhere(['!=', 'page_id', $this->page_id]);
+            }],
         ];
     }
 

@@ -2,11 +2,27 @@
 
 namespace pavlinter\admpages\models;
 
+use pavlinter\admpages\Module;
 use Yii;
 use pavlinter\translation\TranslationBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "{{%page}}".
+ *
+ * @method \pavlinter\translation\TranslationBehavior getLangModels
+ * @method \pavlinter\translation\TranslationBehavior setLanguage
+ * @method \pavlinter\translation\TranslationBehavior getLanguage
+ * @method \pavlinter\translation\TranslationBehavior saveTranslation
+ * @method \pavlinter\translation\TranslationBehavior saveAllTranslation
+ * @method \pavlinter\translation\TranslationBehavior saveAll
+ * @method \pavlinter\translation\TranslationBehavior validateAll
+ * @method \pavlinter\translation\TranslationBehavior validateLangs
+ * @method \pavlinter\translation\TranslationBehavior loadAll
+ * @method \pavlinter\translation\TranslationBehavior loadLang
+ * @method \pavlinter\translation\TranslationBehavior loadLangs
+ * @method \pavlinter\translation\TranslationBehavior getTranslation
  *
  * @property string $id
  * @property string $id_parent
@@ -16,6 +32,7 @@ use pavlinter\translation\TranslationBehavior;
  * @property integer $active
  *
  * @property PageLang[] $translations
+ * @property Page $parent
  */
 class Page extends \yii\db\ActiveRecord
 {
@@ -25,6 +42,10 @@ class Page extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
+            [
+                'class' => TimestampBehavior::className(),
+                'value' => new Expression('NOW()'),
+            ],
             'trans' => [
                 'class' => TranslationBehavior::className(),
                 'translationAttributes' => [
@@ -33,7 +54,7 @@ class Page extends \yii\db\ActiveRecord
                     'description',
                     'keywords',
                     'image',
-                    'url',
+                    'alias',
                     'text',
                 ]
             ],
@@ -75,7 +96,7 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('adm/admpages', 'ID'),
-            'id_parent' => Yii::t('adm/admpages', 'Id Parent'),
+            'id_parent' => Yii::t('adm/admpages', 'Parent'),
             'layout' => Yii::t('adm/admpages', 'Layout'),
             'weight' => Yii::t('adm/admpages', 'Weight'),
             'visible' => Yii::t('adm/admpages', 'Visible'),
@@ -88,6 +109,13 @@ class Page extends \yii\db\ActiveRecord
      */
     public function getTranslations()
     {
-        return $this->hasMany(PageLang::className(), ['page_id' => 'id']);
+        return $this->hasMany(Module::getInstance()->manager->pageLangClass, ['page_id' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(Module::getInstance()->manager->pageClass, ['id_parent' => 'id']);
     }
 }

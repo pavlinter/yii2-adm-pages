@@ -1,5 +1,6 @@
 <?php
 
+use pavlinter\admpages\Module;
 use yii\helpers\Html;
 use pavlinter\adm\Adm;
 
@@ -27,13 +28,47 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-
-            'layout',
-            'weight',
-            'visible',
-            'active',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'attribute' => 'id_parent',
+                'value' => function ($model) {
+                    if ($model->parent) {
+                        return $model->parent->name;
+                    }
+                },
+            ],
+            [
+              'attribute' => 'name',
+              'value' => function ($model) {
+                  return $model->name;
+              },
+            ],
+            [
+                'attribute' => 'title',
+                'value' => function ($model) {
+                    return $model->title;
+                },
+            ],
+            [
+                'attribute' => 'layout',
+                'filter' => Module::getInstance()->pageLayouts
+            ],
+            [
+                'class' => '\kartik\grid\BooleanColumn',
+                'attribute' => 'visible',
+            ],
+            [
+                'class' => '\kartik\grid\BooleanColumn',
+                'attribute' => 'active',
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {copy} {delete}',
+                'buttons' => [
+                    'copy' => function ($url, $model, $key) {
+                        return Html::a(null, ['create', 'id' => $model->id],['class' => 'fa fa-copy', 'title' => Adm::t('admpage', 'Copy', ['dot' => false]),]);
+                    }
+                ],
+            ],
         ],
     ]); ?>
 

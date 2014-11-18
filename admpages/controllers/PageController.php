@@ -62,12 +62,22 @@ class PageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id = null)
     {
+
         $model = Module::getInstance()->manager->createPage();
-        if ($model->validateAll(Yii::$app->request->post())) {
-            if ($model->save(false) && $model->saveAllTranslation(false)) {
-                return $this->redirect(['view', 'id' => $model->id]);
+
+        $data = Yii::$app->request->post();
+        if ($model->loadAll($data)) {
+            if ($model->validateAll()) {
+                if ($model->saveAll()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        } else {
+            if($id){
+                $model = $this->findModel($id);
+                $model->setIsNewRecord(true);
             }
         }
         return $this->render('create', [
@@ -84,8 +94,8 @@ class PageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if ($model->validateAll(Yii::$app->request->post())) {
-            if ($model->save(false) && $model->saveAllTranslation(false)) {
+        if ($model->loadAll(Yii::$app->request->post()) && $model->validateAll()) {
+            if ($model->saveAll(false)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }

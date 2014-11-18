@@ -12,6 +12,10 @@ use yii\helpers\ArrayHelper;
 class Module extends \yii\base\Module implements BootstrapInterface
 {
     public $controllerNamespace = 'pavlinter\admpages\controllers';
+
+    public $pageLayouts = [
+        'index' => 'Page',
+    ];
     /**
      * @inheritdoc
      */

@@ -40,7 +40,7 @@ class PageSearch extends Page
      */
     public function search($params)
     {
-        $query = self::find();
+        $query = self::find()->with(['translations','parent']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

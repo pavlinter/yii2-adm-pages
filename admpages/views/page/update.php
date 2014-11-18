@@ -8,9 +8,9 @@ use pavlinter\adm\Adm;
 
 $this->title = Adm::t('admpage', 'Update {modelClass}: ', [
     'modelClass' => 'Page',
-]) . ' ' . $model->id;
+]) . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Adm::t('admpage', 'Pages'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Adm::t('admpage', 'Update');
 ?>
 <div class="page-update">
