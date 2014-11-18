@@ -38,7 +38,7 @@ class PageSearch extends Page
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$id_parent)
     {
         $query = self::find()->with(['translations','parent']);
 
@@ -46,6 +46,13 @@ class PageSearch extends Page
             'query' => $query,
         ]);
 
+        if ($id_parent !== false) {
+            if (empty($id_parent)) {
+                $query->where(['id_parent' => null]);
+            } else {
+                $query->where(['id_parent' => $id_parent]);
+            }
+        }
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }

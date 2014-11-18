@@ -109,13 +109,13 @@ class Page extends \yii\db\ActiveRecord
      */
     public function getTranslations()
     {
-        return $this->hasMany(Module::getInstance()->manager->pageLangClass, ['page_id' => 'id']);
+        return $this->hasMany(Module::getInstance()->manager->pageLangClass, ['page_id' => 'id'])->indexBy('language_id');
     }
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getParent()
     {
-        return $this->hasOne(Module::getInstance()->manager->pageClass, ['id_parent' => 'id']);
+        return $this->hasOne(Module::getInstance()->manager->pageClass, ['id' => 'id_parent']);
     }
 }

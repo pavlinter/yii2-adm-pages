@@ -4,8 +4,6 @@ namespace pavlinter\admpages\controllers;
 
 use pavlinter\admpages\Module;
 use Yii;
-use app\models\Page;
-use app\models\PageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,14 +32,15 @@ class PageController extends Controller
      * Lists all Page models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id_parent = false)
     {
         $searchModel  = Module::getInstance()->manager->createPageSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id_parent);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'id_parent' => $id_parent,
         ]);
     }
 
@@ -62,7 +61,7 @@ class PageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id = null)
+    public function actionCreate($id = null, $id_parent = null)
     {
 
         $model = Module::getInstance()->manager->createPage();
@@ -78,8 +77,13 @@ class PageController extends Controller
             if($id){
                 $model = $this->findModel($id);
                 $model->setIsNewRecord(true);
+            } else if($id_parent){
+                $model->id_parent = $id_parent;
             }
         }
+
+
+
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -112,8 +116,9 @@ class PageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        if (!in_array($id, Module::getInstance()->closeDeletePage)) {
+            $this->findModel($id)->delete();
+        }
         return $this->redirect(['index']);
     }
 

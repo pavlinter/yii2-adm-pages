@@ -7,7 +7,7 @@ use pavlinter\adm\Adm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
 
-$this->title = $model->id;
+$this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Adm::t('admpage', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,20 +29,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'id_parent',
             'layout',
-            'weight',
-            'visible',
-            'active',
-            //translations
+
             'name',
             'title',
             'description',
             'keywords',
-            'image',
+            [
+                'attribute' => 'image',
+                'format' => 'html',
+                'value' => ($model->image ? Html::img($model->image, ['class' => 'img-responsive', 'style' => 'height: 100px;',]) : null),
+            ],
             'alias',
             'text',
+            'weight',
+            'visible',
+            'active',
         ],
     ]) ?>
 

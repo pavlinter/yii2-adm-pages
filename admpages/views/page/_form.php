@@ -23,7 +23,8 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
 
 <div class="admpage-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+
+    <?php $form = Adm::begin('ActiveForm'); ?>
 
     <?= $form->errorSummary([$model] + $model->getLangModels(), ['class' => 'alert alert-danger']); ?>
 
@@ -33,7 +34,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                 'data' => $parentsData,
                 'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
                 'pluginOptions' => [
-                    'allowClear' => false,
+                    'allowClear' => true,
                 ]
             ]); ?>
         </div>
@@ -42,7 +43,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
             'data' => Module::getInstance()->pageLayouts,
             'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
             'pluginOptions' => [
-                'allowClear' => true,
+                'allowClear' => false,
             ]
         ]); ?>
         </div>
@@ -119,9 +120,9 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
         </div>
 
         <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Adm::t('admpage', 'Create') : Adm::t('admpage', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Adm::t('admpage', 'Create') : Adm::t('admpage', 'Update'), ['class' => 'btn btn-primary']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    <?php Adm::end('ActiveForm'); ?>
 
 </div>

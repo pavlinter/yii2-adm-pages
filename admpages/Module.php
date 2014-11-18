@@ -14,8 +14,13 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public $controllerNamespace = 'pavlinter\admpages\controllers';
 
     public $pageLayouts = [
-        'index' => 'Page',
+        'page' => 'Page',
+        'page-image' => 'Page + image',
     ];
+    public $pageLayout = '/main';
+
+    public $closeDeletePage = [5, 4]; //id [2,130]
+
     /**
      * @inheritdoc
      */
@@ -44,7 +49,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         /* @var $adm \pavlinter\adm\Adm */
         $adm->params['left-menu']['admpages'] = [
-            'label' => '<i class="fa fa-hdd-o"></i><span>' . $adm::t('admpages','Pages') . '</span>',
+            'label' => '<i class="fa fa-file-text"></i><span>' . $adm::t('admpages','Pages') . '</span>',
             'url' => ['/' . $adm->id . '/admpages/page/index']
         ];
     }
