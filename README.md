@@ -22,12 +22,12 @@ Yii2: Adm-Pages Модуль для Adm CMS
                 'pageLayouts' => [
                    'page' => 'Page',
                    'page-image' => 'Page + image',
-                ];
+                ],
                 'pageTypes' => [
                    'page' => 'Page',
                    'news' => 'News',
-                ];
-                'pageLayout' => '/main';
+                ],
+                'pageLayout' => '/main',
                 'closeDeletePage' => [] //id [2,130]
             ],
             ...

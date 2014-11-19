@@ -59,7 +59,7 @@ class PageSearch extends Page
             'translations',
         ]);
 
-        
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
