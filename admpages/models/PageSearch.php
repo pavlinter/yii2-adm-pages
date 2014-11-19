@@ -2,6 +2,7 @@
 
 namespace pavlinter\admpages\models;
 
+use pavlinter\admpages\Module;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -17,7 +18,8 @@ class PageSearch extends Page
     public function rules()
     {
         return [
-            [['id', 'id_parent', 'weight', 'visible', 'active'], 'integer'],
+            [['id', 'weight', 'visible', 'active'], 'integer'],
+            [['name', 'title', 'alias','type','id_parent'], 'string'],
             [['layout'], 'safe'],
         ];
     }
@@ -40,7 +42,24 @@ class PageSearch extends Page
      */
     public function search($params,$id_parent)
     {
-        $query = self::find()->with(['translations','parent']);
+        $pageTable      = forward_static_call(array(Module::getInstance()->manager->pageClass, 'tableName'));
+        $pageLangTable  = forward_static_call(array(Module::getInstance()->manager->pageLangClass, 'tableName'));
+
+
+        $query = self::find()->from(['p' => $pageTable])
+            ->innerJoin(['l'=> $pageLangTable],'l.page_id=p.id AND l.language_id=:language_id',[':language_id' => Yii::$app->getI18n()->getId()]);
+
+        $loadParams = $this->load($params);
+        if ($this->id_parent) {
+            $query->innerJoin(['l2'=> $pageLangTable],'l2.page_id=p.id_parent AND l2.language_id=:language_id',[':language_id' => Yii::$app->getI18n()->getId()]);
+        }
+
+        $query->with([
+            'parent',
+            'translations',
+        ]);
+
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -53,19 +72,38 @@ class PageSearch extends Page
                 $query->where(['id_parent' => $id_parent]);
             }
         }
-        if (!($this->load($params) && $this->validate())) {
+        if (!($loadParams && $this->validate())) {
             return $dataProvider;
         }
 
+
+        $dataProvider->sort->attributes['name']['asc'] = ['l.name' => SORT_ASC];
+        $dataProvider->sort->attributes['name']['desc'] = ['l.name' => SORT_DESC];
+
+        $dataProvider->sort->attributes['title']['asc'] = ['l.title' => SORT_ASC];
+        $dataProvider->sort->attributes['title']['desc'] = ['l.title' => SORT_DESC];
+
+        $dataProvider->sort->attributes['alias']['asc'] = ['l.alias' => SORT_ASC];
+        $dataProvider->sort->attributes['alias']['desc'] = ['l.alias' => SORT_DESC];
+
+
         $query->andFilterWhere([
-            'id' => $this->id,
-            'id_parent' => $this->id_parent,
-            'weight' => $this->weight,
-            'visible' => $this->visible,
-            'active' => $this->active,
+            'p.id' => $this->id,
+            'p.weight' => $this->weight,
+            'p.layout' => $this->layout,
+            'p.type' => $this->weight,
+            'p.visible' => $this->visible,
+            'p.active' => $this->active,
         ]);
 
-        $query->andFilterWhere(['like', 'layout', $this->layout]);
+        $query->andFilterWhere(['like', 'l.name', $this->name])
+            ->andFilterWhere(['like', 'l.title', $this->title])
+            ->andFilterWhere(['like', 'l.alias', $this->alias]);
+
+        if ($this->id_parent) {
+            $query->andFilterWhere(['like', 'l2.name', $this->id_parent]);
+        }
+
 
         return $dataProvider;
     }

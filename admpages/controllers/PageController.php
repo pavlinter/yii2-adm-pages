@@ -2,6 +2,7 @@
 
 namespace pavlinter\admpages\controllers;
 
+use pavlinter\adm\filters\AccessControl;
 use pavlinter\admpages\Module;
 use Yii;
 use yii\web\Controller;
@@ -19,6 +20,15 @@ class PageController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['Adm-Pages'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -45,18 +55,6 @@ class PageController extends Controller
     }
 
     /**
-     * Displays a single Page model.
-     * @param string $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Page model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -70,7 +68,7 @@ class PageController extends Controller
         if ($model->loadAll($data)) {
             if ($model->validateAll()) {
                 if ($model->saveAll()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['index']);
                 }
             }
         } else {
@@ -100,7 +98,7 @@ class PageController extends Controller
         $model = $this->findModel($id);
         if ($model->loadAll(Yii::$app->request->post()) && $model->validateAll()) {
             if ($model->saveAll(false)) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         }
         return $this->render('update', [

@@ -2,7 +2,9 @@
 
 namespace pavlinter\admpages\models;
 
+use pavlinter\admpages\Module;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "{{%page_lang}}".
@@ -37,6 +39,9 @@ class PageLang extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name', 'title', 'description', 'keywords'], 'filter', 'filter' => function ($value) {
+                return Html::encode($value);
+            }],
             [['name'], 'required'],
             [['page_id', 'language_id'], 'integer'],
             [['text'], 'string'],
@@ -82,6 +87,6 @@ class PageLang extends \yii\db\ActiveRecord
      */
     public function getPage()
     {
-        return $this->hasOne(Page::className(), ['id' => 'page_id']);
+        return $this->hasOne(Module::getInstance()->manager->pageClass, ['id' => 'page_id']);
     }
 }

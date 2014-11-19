@@ -1,5 +1,6 @@
 <?php
 
+use kartik\grid\GridView;
 use pavlinter\admpages\Module;
 use yii\helpers\Html;
 use pavlinter\adm\Adm;
@@ -10,6 +11,7 @@ use pavlinter\adm\Adm;
 
 $this->title = Adm::t('admpage', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="page-index">
 
@@ -33,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id_parent',
                 'format' => 'html',
+                'enableSorting' => false,
                 'visible' => $id_parent === false,
                 'value' => function ($model) {
                     if ($model->parent) {
@@ -55,19 +58,51 @@ $this->params['breadcrumbs'][] = $this->title;
             'alias',
             [
                 'attribute' => 'layout',
-                'filter' => Module::getInstance()->pageLayouts
+                'vAlign' => 'middle',
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter'=> Module::getInstance()->pageLayouts,
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' =>true ],
+                ],
+                'filterInputOptions' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                'format' => 'raw'
+            ],
+            [
+                'attribute' => 'type',
+                'vAlign' => 'middle',
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter'=> Module::getInstance()->pageTypes,
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' =>true ],
+                ],
+                'filterInputOptions' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                'format' => 'raw'
             ],
             [
                 'class' => '\kartik\grid\BooleanColumn',
                 'attribute' => 'visible',
+                'filterType' => GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ],
             ],
             [
                 'class' => '\kartik\grid\BooleanColumn',
                 'attribute' => 'active',
+                'filterType' => GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {show} {update} {subpages} {copy} {delete}',
+                'template' => '{view} {update} {subpages} {copy} {delete}',
                 'buttons' => [
                     'delete' => function ($url, $model) {
                         if (in_array($model->id, Module::getInstance()->closeDeletePage)) {
@@ -80,18 +115,29 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                         ]);
                     },
-                    'show' => function ($url, $model, $key) {
+                    'view' => function ($url, $model) {
                         if ($model->alias) {
-                            return Html::a(null, ['default/index', 'alias' => $model->alias],['class' => 'fa fa-laptop', 'title' => Adm::t('admpage', 'Example', ['dot' => false]),'target' => '_blank']);
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['default/index', 'alias' => $model->alias], [
+                                'title' => Yii::t('yii', 'View'),
+                                'data-pjax' => '0',
+                                'target' => '_blank'
+                            ]);
                         }
                     },
-                    'copy' => function ($url, $model, $key) {
-                        return Html::a(null, ['create', 'id' => $model->id],['class' => 'fa fa-copy', 'title' => Adm::t('admpage', 'Copy', ['dot' => false]),]);
+                    'copy' => function ($url, $model) {
+                        return Html::a('<span class="fa fa-copy"></span>', ['create', 'id' => $model->id], [
+                            'title' => Adm::t('admpage', 'Copy', ['dot' => false]),
+                            'data-pjax' => '0',
+                            'target' => '_blank'
+                        ]);
                     },
-                    'subpages' => function ($url, $model, $key) {
-                        return Html::a(null, ['', 'id_parent' => $model->id],['class' => 'fa fa-plus-circle', 'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),]);
-                    }
-
+                    'subpages' => function ($url, $model) {
+                        return Html::a('<span class="fa fa-plus-circle"></span>', ['', 'id_parent' => $model->id], [
+                            'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),
+                            'data-pjax' => '0',
+                            'target' => '_blank'
+                        ]);
+                    },
                 ],
             ],
         ],

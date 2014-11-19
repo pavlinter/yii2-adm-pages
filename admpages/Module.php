@@ -17,6 +17,13 @@ class Module extends \yii\base\Module implements BootstrapInterface
         'page' => 'Page',
         'page-image' => 'Page + image',
     ];
+
+    public $pageTypes = [
+        'page' => 'Page',
+        'news' => 'News',
+    ];
+
+
     public $pageLayout = '/main';
 
     public $closeDeletePage = [5, 4]; //id [2,130]
@@ -48,9 +55,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function bootstrap($adm)
     {
         /* @var $adm \pavlinter\adm\Adm */
-        $adm->params['left-menu']['admpages'] = [
-            'label' => '<i class="fa fa-file-text"></i><span>' . $adm::t('admpages','Pages') . '</span>',
-            'url' => ['/' . $adm->id . '/admpages/page/index']
-        ];
+        if ($adm->user->can('Adm-Pages')) {
+            $adm->params['left-menu']['admpages'] = [
+                'label' => '<i class="fa fa-file-text"></i><span>' . $adm::t('admpages','Pages') . '</span>',
+                'url' => ['/' . $adm->id . '/admpages/page/index']
+            ];
+        }
     }
 }

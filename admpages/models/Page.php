@@ -27,6 +27,7 @@ use yii\db\Expression;
  * @property string $id
  * @property string $id_parent
  * @property string $layout
+ * @property string $type
  * @property string $weight
  * @property integer $visible
  * @property integer $active
@@ -76,8 +77,10 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             [['id_parent', 'weight', 'visible', 'active'], 'integer'],
-            [['layout'], 'required'],
-            [['layout'], 'string', 'max' => 50]
+            [['layout', 'type'], 'required'],
+            [['layout', 'type'], 'string', 'max' => 50],
+            [['layout'], 'in', 'range' => array_keys(Module::getInstance()->pageLayouts)],
+            [['type'], 'in', 'range' => array_keys(Module::getInstance()->pageTypes)],
         ];
     }
 

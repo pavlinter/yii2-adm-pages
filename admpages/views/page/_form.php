@@ -18,7 +18,6 @@ if (!$model->isNewRecord) {
 
 
 $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
-
 ?>
 
 <div class="admpage-form">
@@ -29,7 +28,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
     <?= $form->errorSummary([$model] + $model->getLangModels(), ['class' => 'alert alert-danger']); ?>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="col-xs-12 col-sm-6 col-md-3">
             <?= $form->field($model, 'id_parent')->widget(\kartik\widgets\Select2::classname(), [
                 'data' => $parentsData,
                 'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
@@ -38,21 +37,22 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                 ]
             ]); ?>
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="col-xs-12 col-sm-6 col-md-3">
         <?= $form->field($model, 'layout')->widget(\kartik\widgets\Select2::classname(), [
             'data' => Module::getInstance()->pageLayouts,
-            'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
-            'pluginOptions' => [
-                'allowClear' => false,
-            ]
         ]); ?>
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
+        <div class="col-xs-12 col-sm-6 col-md-3">
+            <?= $form->field($model, 'type')->widget(\kartik\widgets\Select2::classname(), [
+                'data' => Module::getInstance()->pageTypes,
+            ]); ?>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3">
             <?= $form->field($model, 'weight')->textInput(['maxlength' => 10]) ?>
         </div>
     </div>
 
-    <section class="panel">
+    <section class="panel adm-langs-panel">
         <header class="panel-heading bg-light">
             <ul class="nav nav-tabs nav-justified text-uc">
                 <?php  foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) { ?>
