@@ -17,7 +17,7 @@ class m141119_115055_adm_pages extends Migration
             'id_parent' => Schema::TYPE_INTEGER,
             'layout' => Schema::TYPE_STRING . "(50) NOT NULL",
             'type' => Schema::TYPE_STRING . "(50) NOT NULL",
-            'weight' => Schema::TYPE_INTEGER . " NOT NULL NOT NULL DEFAULT '1000'",
+            'weight' => Schema::TYPE_INTEGER,
             'visible' => Schema::TYPE_SMALLINT . "(1) NOT NULL DEFAULT '1'",
             'active' => Schema::TYPE_SMALLINT . "(1) NOT NULL DEFAULT '1'",
             'created_at' => Schema::TYPE_TIMESTAMP . " NOT NULL",

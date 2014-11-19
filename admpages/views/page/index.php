@@ -118,14 +118,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('<span class="fa fa-copy"></span>', ['create', 'id' => $model->id], [
                             'title' => Adm::t('admpage', 'Copy', ['dot' => false]),
                             'data-pjax' => '0',
-                            'target' => '_blank'
                         ]);
                     },
                     'subpages' => function ($url, $model) {
                         return Html::a('<span class="fa fa-plus-circle"></span>', ['', 'id_parent' => $model->id], [
                             'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),
                             'data-pjax' => '0',
-                            'target' => '_blank'
                         ]);
                     },
                 ],
