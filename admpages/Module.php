@@ -2,6 +2,7 @@
 
 namespace pavlinter\admpages;
 
+use pavlinter\adm\Adm;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
@@ -18,15 +19,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
         'page-image' => 'Page + image',
     ];
 
-    public $pageTypes = [
-        'page' => 'Page',
-        'news' => 'News',
-    ];
-
+    public $pageTypes;
 
     public $pageLayout = '/main';
 
-    public $closeDeletePage = [5, 4]; //id [2,130]
+    public $closeDeletePage = []; //id [2,130]
 
     /**
      * @inheritdoc
@@ -34,6 +31,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function __construct($id, $parent = null, $config = [])
     {
         $config = ArrayHelper::merge([
+            'pageTypes' => [
+                'page' => Adm::t('admpages/types','Pages'),
+                'main' => Adm::t('admpages/types','Main Page'),
+            ],
             'components' => [
                 'manager' => [
                     'class' => 'pavlinter\admpages\ModelManager'

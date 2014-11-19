@@ -27,14 +27,13 @@ class DefaultController extends Controller
         }
 
         foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
-            if (isset($model->translations[Yii::$app->getI18n()->getId()])) {
-                $pageLang = $model->translations[$language['id']];
+            if (isset($model->translations[$id_language])) {
+                $pageLang = $model->translations[$id_language];
                 $url = ['/adm/admpages/default/index', 'alias' => $pageLang->alias,'lang' => $language[Yii::$app->getI18n()->langColCode]];
             } else {
                 $url = ['','lang' => $language[Yii::$app->getI18n()->langColCode]];
             }
-            $url = Yii::$app->getUrlManager()->createUrl($url);
-            $language['url'] = $url;
+            $language['url'] = Yii::$app->getUrlManager()->createUrl($url);
             Yii::$app->getI18n()->setLanguage($id_language, $language);
         }
 
@@ -45,4 +44,22 @@ class DefaultController extends Controller
             'model' => $model,
         ]);
     }
+
+    /**
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionMain()
+    {
+        /* @var \pavlinter\admpages\models\Page $model*/
+        $model = Module::getInstance()->manager->createPageQuery('mainPage');
+        if ($model === false) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        return $this->render('layouts/'.$model->layout,[
+            'model' => $model,
+        ]);
+    }
+
 }

@@ -95,7 +95,7 @@ class PageSearch extends Page
             'p.id' => $this->id,
             'p.weight' => $this->weight,
             'p.layout' => $this->layout,
-            'p.type' => $this->weight,
+            'p.type' => $this->type,
             'p.visible' => $this->visible,
             'p.active' => $this->active,
         ]);

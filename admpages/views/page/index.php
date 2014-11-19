@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'id_parent',
+                'vAlign' => 'middle',
+                'hAlign' => 'center',
                 'format' => 'html',
                 'enableSorting' => false,
                 'visible' => $id_parent === false,
@@ -45,22 +47,37 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
               'attribute' => 'name',
+              'vAlign' => 'middle',
+              'hAlign' => 'center',
               'value' => function ($model) {
                   return $model->name;
               },
             ],
             [
                 'attribute' => 'title',
+                'vAlign' => 'middle',
+                'hAlign' => 'center',
                 'value' => function ($model) {
                     return $model->title;
                 },
             ],
-            'alias',
+            [
+                'attribute' => 'alias',
+                'vAlign' => 'middle',
+                'hAlign' => 'center',
+            ],
             [
                 'attribute' => 'layout',
                 'vAlign' => 'middle',
+                'hAlign' => 'center',
+                'vAlign' => 'middle',
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter'=> Module::getInstance()->pageLayouts,
+                'value' => function ($model) {
+                    if (isset(Module::getInstance()->pageLayouts[$model->layout])) {
+                        return Module::getInstance()->pageLayouts[$model->layout];
+                    }
+                },
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' =>true ],
                 ],
@@ -70,18 +87,32 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'type',
                 'vAlign' => 'middle',
+                'hAlign' => 'center',
+                'vAlign' => 'middle',
+                'hAlign' => 'center',
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter'=> Module::getInstance()->pageTypes,
+                'value' => function ($model) {
+                    if (isset(Module::getInstance()->pageTypes[$model->type])) {
+                        return Module::getInstance()->pageTypes[$model->type];
+                    }
+                },
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' =>true ],
                 ],
                 'filterInputOptions' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
                 'format' => 'raw'
             ],
-            'weight',
+            [
+                'attribute' => 'weight',
+                'vAlign' => 'middle',
+                'hAlign' => 'center',
+            ],
             [
                 'class' => '\kartik\grid\BooleanColumn',
                 'attribute' => 'active',
+                'vAlign' => 'middle',
+                'hAlign' => 'center',
                 'filterType' => GridView::FILTER_SELECT2,
                 'filterWidgetOptions' => [
                     'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],

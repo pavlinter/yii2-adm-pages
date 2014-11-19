@@ -139,4 +139,29 @@ class Page extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Module::getInstance()->manager->pageClass, ['id' => 'id_parent']);
     }
+
+    /**
+     * @param bool $registerMetaTag
+     * @param bool $setLanguageUrl
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    public static function mainPage($registerMetaTag = true, $setLanguageUrl = true)
+    {
+        $model = self::find()->innerJoinWith(['translations'])->where(['type' => 'main'])->orderBy(['weight' => SORT_ASC])->one();
+        if ($model === null || !$model->active || !isset($model->translations[Yii::$app->getI18n()->getId()])) {
+            return false;
+        }
+        if ($registerMetaTag) {
+            foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
+                $language['url'] = Yii::$app->getUrlManager()->createUrl(['','lang' => $language[Yii::$app->getI18n()->langColCode]]);
+                Yii::$app->getI18n()->setLanguage($id_language, $language);
+            }
+        }
+        if ($setLanguageUrl) {
+            Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $model->description]);
+            Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $model->keywords]);
+        }
+        return $model;
+    }
+
 }

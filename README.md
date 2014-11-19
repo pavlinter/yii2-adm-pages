@@ -23,10 +23,7 @@ Yii2: Adm-Pages Модуль для Adm CMS
                    'page' => 'Page',
                    'page-image' => 'Page + image',
                 ],
-                'pageTypes' => [
-                   'page' => 'Page',
-                   'news' => 'News',
-                ],
+                'pageTypes' => [],
                 'pageLayout' => '/main',
                 'closeDeletePage' => [] //id [2,130]
             ],
@@ -41,6 +38,7 @@ Yii2: Adm-Pages Модуль для Adm CMS
     'urlManager' => [
         ....
         'rules'=>[
+            '' => 'adm/admpages/default/main', //OR $config['defaultRoute'] = 'adm/admpages/default/main';
             'page/<alias:([A-Za-z0-9_-])+>' => 'adm/admpages/default/index',
         ],
     ],
