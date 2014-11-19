@@ -32,6 +32,15 @@ use yii\db\Expression;
  * @property integer $visible
  * @property integer $active
  *
+ * Translation
+ * @property string $name
+ * @property string $title
+ * @property string $description
+ * @property string $keywords
+ * @property string $image
+ * @property string $alias
+ * @property string $text
+ *
  * @property PageLang[] $translations
  * @property Page $parent
  */
@@ -76,6 +85,7 @@ class Page extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['weight', 'id_parent'], 'default', 'value' => null],
             [['id_parent', 'weight', 'visible', 'active'], 'integer'],
             [['layout', 'type'], 'required'],
             [['layout', 'type'], 'string', 'max' => 50],
@@ -106,7 +116,15 @@ class Page extends \yii\db\ActiveRecord
             'active' => Yii::t('adm/admpages', 'Active'),
         ];
     }
-
+    public function beforeSave($insert)
+    {
+        $query = self::find()->select(['MAX(weight)']);
+        if (!$insert) {
+            $query->where(['!=', 'id', $this->id]);
+        }
+        $this->weight = $query->scalar() + 50;
+        return parent::beforeSave($insert);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

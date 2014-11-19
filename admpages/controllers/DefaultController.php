@@ -38,6 +38,9 @@ class DefaultController extends Controller
             Yii::$app->getI18n()->setLanguage($id_language, $language);
         }
 
+        Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $model->description]);
+        Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $model->keywords]);
+
         return $this->render('layouts/'.$model->layout,[
             'model' => $model,
         ]);

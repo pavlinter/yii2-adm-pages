@@ -78,17 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterInputOptions' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
                 'format' => 'raw'
             ],
-            [
-                'class' => '\kartik\grid\BooleanColumn',
-                'attribute' => 'visible',
-                'filterType' => GridView::FILTER_SELECT2,
-                'filterWidgetOptions' => [
-                    'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
-                    'pluginOptions' => [
-                        'allowClear' => true
-                    ],
-                ],
-            ],
+            'weight',
             [
                 'class' => '\kartik\grid\BooleanColumn',
                 'attribute' => 'active',

@@ -59,10 +59,14 @@ class PageSearch extends Page
             'translations',
         ]);
 
-
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'weight' => SORT_ASC,
+                ],
+            ],
         ]);
 
         if ($id_parent !== false) {

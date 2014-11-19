@@ -69,6 +69,7 @@ class PageController extends Controller
         $data = Yii::$app->request->post();
         if ($model->loadAll($data)) {
             if ($model->validateAll()) {
+
                 if ($model->saveAll()) {
                     return $this->redirect(['index']);
                 }
