@@ -37,7 +37,7 @@ class DefaultController extends Controller
             $language['url'] = $url;
             Yii::$app->getI18n()->setLanguage($id_language, $language);
         }
-        
+
         return $this->render('layouts/'.$model->layout,[
             'model' => $model,
         ]);

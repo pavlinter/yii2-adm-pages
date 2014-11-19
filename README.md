@@ -6,7 +6,7 @@ Yii2: Adm-Pages Модуль для Adm CMS
 Удобнее всего установить это расширение через [composer](http://getcomposer.org/download/).
 
 ```
-    "pavlinter/yii2-adm-pages": "@dev",
+   "pavlinter/yii2-adm-pages": "*",
 ```
 
 Настройка
@@ -28,6 +28,7 @@ Yii2: Adm-Pages Модуль для Adm CMS
                    'news' => 'News',
                 ];
                 'pageLayout' => '/main';
+                'closeDeletePage' => [] //id [2,130]
             ],
             ...
         ],

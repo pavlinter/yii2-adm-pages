@@ -63,6 +63,8 @@ class PageController extends Controller
     {
 
         $model = Module::getInstance()->manager->createPage();
+        $model->loadDefaultValues();
+
 
         $data = Yii::$app->request->post();
         if ($model->loadAll($data)) {
