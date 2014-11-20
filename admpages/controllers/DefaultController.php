@@ -40,7 +40,7 @@ class DefaultController extends Controller
         Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $model->description]);
         Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $model->keywords]);
 
-        return $this->render('layouts/'.$model->layout,[
+        return $this->render($model->layout,[
             'model' => $model,
         ]);
     }
@@ -57,7 +57,7 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        return $this->render('layouts/'.$model->layout,[
+        return $this->render($model->layout,[
             'model' => $model,
         ]);
     }
