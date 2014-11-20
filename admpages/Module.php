@@ -19,7 +19,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         'page-image' => 'Page + image',
     ];
 
-    public $pageTypes;
+    public $pageTypes = [];
 
     public $pageLayout = '/main';
 
