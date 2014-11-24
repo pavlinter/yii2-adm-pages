@@ -59,7 +59,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         if ($adm->user->can('Adm-Pages')) {
             $adm->params['left-menu']['admpages'] = [
                 'label' => '<i class="fa fa-file-text"></i><span>' . $adm::t('admpages','Pages') . '</span>',
-                'url' => ['/' . $adm->id . '/admpages/page/index']
+                'url' => ['/' . $adm->id . '/admpages/page/index', 'id_parent' => 0]
             ];
         }
     }
