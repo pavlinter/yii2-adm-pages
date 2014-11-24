@@ -175,7 +175,11 @@ class Page extends \yii\db\ActiveRecord
 
         $model = $query->one();
 
-        if ($model === null || !$model->active || !isset($model->translations[Yii::$app->getI18n()->getId()])) {
+        if ($model === null) {
+            return null;
+        }
+
+        if (!$model->active || !isset($model->translations[Yii::$app->getI18n()->getId()])) {
             return false;
         }
 
