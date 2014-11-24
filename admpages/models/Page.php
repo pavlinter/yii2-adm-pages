@@ -194,9 +194,7 @@ class Page extends \yii\db\ActiveRecord
                 } elseif (is_callable($url)) {
                     $language['url'] = call_user_func($url, $model, $id_language, $language);
                 }
-                $language['url'] = $url;
-
-
+                
                 Yii::$app->getI18n()->setLanguage($id_language, $language);
             }
         }
