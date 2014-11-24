@@ -72,7 +72,7 @@ class PageController extends Controller
             if ($model->validateAll()) {
 
                 if ($model->saveAll()) {
-                    return $this->redirect(['index']);
+                    return $this->redirect(['index', 'id_parent' => 0]);
                 }
             }
         } else {
@@ -102,7 +102,7 @@ class PageController extends Controller
         $model = $this->findModel($id);
         if ($model->loadAll(Yii::$app->request->post()) && $model->validateAll()) {
             if ($model->saveAll(false)) {
-                return $this->redirect(['index']);
+                return $this->redirect(['index', 'id_parent' => 0]);
             }
         }
 
@@ -122,7 +122,7 @@ class PageController extends Controller
         if (!in_array($id, Module::getInstance()->closeDeletePage)) {
             $this->findModel($id)->delete();
         }
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id_parent' => 0]);
     }
 
     /**
