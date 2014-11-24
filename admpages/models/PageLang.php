@@ -39,7 +39,7 @@ class PageLang extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'title', 'description', 'keywords'], 'filter', 'filter' => function ($value) {
+            [['name', 'title', 'description', 'keywords', 'url'], 'filter', 'filter' => function ($value) {
                 return Html::encode($value);
             }],
             [['name'], 'required'],
@@ -47,6 +47,7 @@ class PageLang extends \yii\db\ActiveRecord
             [['text'], 'string'],
             [['name'], 'string', 'max' => 100],
             [['title'], 'string', 'max' => 80],
+            [['url'], 'string', 'max' => 2000],
             [['description', 'image', 'alias'], 'string', 'max' => 200],
             [['keywords'], 'string', 'max' => 250],
             [['alias'], 'match', 'pattern' => '/^([A-Za-z0-9_-])+$/'],

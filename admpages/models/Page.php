@@ -7,6 +7,7 @@ use Yii;
 use pavlinter\translation\TranslationBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%page}}".
@@ -39,6 +40,7 @@ use yii\db\Expression;
  * @property string $keywords
  * @property string $image
  * @property string $alias
+ * @property string $url
  * @property string $text
  *
  * @property PageLang[] $translations
@@ -65,6 +67,7 @@ class Page extends \yii\db\ActiveRecord
                     'keywords',
                     'image',
                     'alias',
+                    'url',
                     'text',
                 ]
             ],
@@ -116,15 +119,97 @@ class Page extends \yii\db\ActiveRecord
             'active' => Yii::t('adm/admpages', 'Active'),
         ];
     }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
     public function beforeSave($insert)
     {
-        $query = self::find()->select(['MAX(weight)']);
-        if (!$insert) {
-            $query->where(['!=', 'id', $this->id]);
+        if ($this->weight === null) {
+            $query = self::find()->select(['MAX(weight)']);
+            if (!$insert) {
+                $query->where(['!=', 'id', $this->id]);
+            }
+            $this->weight = $query->scalar() + 50;
         }
-        $this->weight = $query->scalar() + 50;
         return parent::beforeSave($insert);
     }
+
+    /**
+     * @return bool|string
+     */
+    public function getAlias()
+    {
+        $model = $this->getTranslation();
+        if ($model->url) {
+            if (strpos($model->url, '//') === 0) {
+                return trim($model->url, '/');
+            }
+            return false;
+        }
+        return $model->alias;
+    }
+
+    /**
+     * @param $id
+     * @param array $config
+     * @return array|bool|null|\yii\db\ActiveRecord
+     */
+    public static function get($id, $config = [])
+    {
+        Yii::$app->getModule('adm'); // load module
+        $config = ArrayHelper::merge([
+            'type' => 'page',
+            'setLanguageUrl' => true,
+            'registerMetaTag' => true,
+            'where' => false,
+            'orderBy' => false,
+            'url' => [''],
+        ], $config);
+
+        $pageTable = forward_static_call(array(Module::getInstance()->manager->pageClass, 'tableName'));
+        
+        $query = self::find()->from(['p' => $pageTable])->innerJoinWith(['translations']);
+        if ($config['where'] === false) {
+            $query->where(['p.id' => $id]);
+        } else {
+            $query->where($config['where']);
+        }
+        if ($config['orderBy'] !== false) {
+            $query->orderBy($config['orderBy']);
+        }
+
+        $model = $query->one();
+
+        if ($model === null || !$model->active || !isset($model->translations[Yii::$app->getI18n()->getId()])) {
+            return false;
+        }
+
+        if ($config['setLanguageUrl']) {
+            $url = $config['url'];
+            foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
+                if (is_array($url)) {
+                    $language['url'] = ArrayHelper::merge($config['url'],[
+                        'lang' => $language[Yii::$app->getI18n()->langColCode],
+                    ]);
+                    $language['url'] = Yii::$app->getUrlManager()->createUrl($url);
+                } elseif (is_callable($url)) {
+                    $language['url'] = call_user_func($url, $model, $id_language, $language);
+                }
+                $language['url'] = $url;
+
+
+                Yii::$app->getI18n()->setLanguage($id_language, $language);
+            }
+        }
+        if ($config['registerMetaTag']) {
+            Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $model->description]);
+            Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $model->keywords]);
+        }
+        return $model;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -132,6 +217,7 @@ class Page extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Module::getInstance()->manager->pageLangClass, ['page_id' => 'id'])->indexBy('language_id');
     }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -139,29 +225,4 @@ class Page extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Module::getInstance()->manager->pageClass, ['id' => 'id_parent']);
     }
-
-    /**
-     * @param bool $registerMetaTag
-     * @param bool $setLanguageUrl
-     * @return array|bool|null|\yii\db\ActiveRecord
-     */
-    public static function mainPage($registerMetaTag = true, $setLanguageUrl = true)
-    {
-        $model = self::find()->innerJoinWith(['translations'])->where(['type' => 'main'])->orderBy(['weight' => SORT_ASC])->one();
-        if ($model === null || !$model->active || !isset($model->translations[Yii::$app->getI18n()->getId()])) {
-            return false;
-        }
-        if ($registerMetaTag) {
-            foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
-                $language['url'] = Yii::$app->getUrlManager()->createUrl(['','lang' => $language[Yii::$app->getI18n()->langColCode]]);
-                Yii::$app->getI18n()->setLanguage($id_language, $language);
-            }
-        }
-        if ($setLanguageUrl) {
-            Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $model->description]);
-            Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $model->keywords]);
-        }
-        return $model;
-    }
-
 }

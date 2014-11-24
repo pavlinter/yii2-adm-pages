@@ -5,9 +5,11 @@ namespace pavlinter\admpages\controllers;
 use pavlinter\adm\filters\AccessControl;
 use pavlinter\admpages\Module;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * PageController implements the CRUD actions for Page model.
@@ -65,7 +67,6 @@ class PageController extends Controller
         $model = Module::getInstance()->manager->createPage();
         $model->loadDefaultValues();
 
-
         $data = Yii::$app->request->post();
         if ($model->loadAll($data)) {
             if ($model->validateAll()) {
@@ -104,6 +105,7 @@ class PageController extends Controller
                 return $this->redirect(['index']);
             }
         }
+
         return $this->render('update', [
             'model' => $model,
         ]);
@@ -139,5 +141,40 @@ class PageController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function actionAlias($q, $page_id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $pageTable      = forward_static_call(array(Module::getInstance()->manager->pageClass, 'tableName'));
+        $pageLangTable  = forward_static_call(array(Module::getInstance()->manager->pageLangClass, 'tableName'));
+
+        $query = Module::getInstance()->manager->createPageQuery('find')
+            ->from(['p' => $pageTable])->select('l.alias,l.language_id')
+            ->innerJoin(['l'=> $pageLangTable],'l.page_id = p.id')->with([
+                'translations',
+            ])->where(['like', 'l.alias', $q]);
+
+        if ($page_id) {
+            $query->andWhere(['!=', 'p.id', $page_id]);
+        }
+        $model = $query->limit(10)->all();
+
+        $result = [];
+
+        foreach ($model as $m) {
+            if ($m->alias == '') {
+                continue;
+            }
+            $result[] = [
+                'id' => '//' . $m->alias,
+                'text' => $m->alias,
+            ];
+        }
+        return $result;
     }
 }

@@ -63,4 +63,13 @@ class Module extends \yii\base\Module implements BootstrapInterface
             ];
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        PageAsset::register(Yii::$app->getView());
+        return parent::beforeAction($action);
+    }
 }

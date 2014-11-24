@@ -20,25 +20,23 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
         /* @var \pavlinter\admpages\models\Page $model*/
-        $model = Module::getInstance()->manager->createPageQuery('find')->innerJoinWith(['translations'])->where(['alias' => $alias])->one();
+        $model = Module::getInstance()->manager->createPageQuery('get', null, [
+            'where' => ['alias' => $alias],
+            'url' => function ($model, $id_language, $language) {
+                if (isset($model->translations[$id_language])) {
+                    $pageLang = $model->translations[$id_language];
+                    $url = ['/adm/admpages/default/index', 'alias' => $pageLang->alias];
+                } else {
+                    $url = [''];
+                }
+                $url['lang'] = $language[Yii::$app->getI18n()->langColCode];
+                return Yii::$app->getUrlManager()->createUrl($url);
+            },
+        ]);
 
-        if ($model === null || !$model->active || !isset($model->translations[Yii::$app->getI18n()->getId()])) {
+        if ($model === false) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-
-        foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
-            if (isset($model->translations[$id_language])) {
-                $pageLang = $model->translations[$id_language];
-                $url = ['/adm/admpages/default/index', 'alias' => $pageLang->alias,'lang' => $language[Yii::$app->getI18n()->langColCode]];
-            } else {
-                $url = ['','lang' => $language[Yii::$app->getI18n()->langColCode]];
-            }
-            $language['url'] = Yii::$app->getUrlManager()->createUrl($url);
-            Yii::$app->getI18n()->setLanguage($id_language, $language);
-        }
-
-        Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $model->description]);
-        Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $model->keywords]);
 
         return $this->render($model->layout,[
             'model' => $model,
@@ -52,11 +50,16 @@ class DefaultController extends Controller
     public function actionMain()
     {
         /* @var \pavlinter\admpages\models\Page $model*/
-        $model = Module::getInstance()->manager->createPageQuery('mainPage');
+        $model = Module::getInstance()->manager->createPageQuery('get', null, [
+            'where' => ['type' => 'main'],
+            'orderBy' => ['weight' => SORT_ASC],
+            'url' => [''],
+        ]);
+
         if ($model === false) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-
+        
         return $this->render($model->layout,[
             'model' => $model,
         ]);

@@ -4,6 +4,7 @@ use kartik\checkbox\CheckboxX;
 use pavlinter\admpages\Module;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\JsExpression;
 use yii\widgets\ActiveForm;
 use pavlinter\adm\Adm;
 
@@ -16,8 +17,8 @@ if (!$model->isNewRecord) {
     $parents->where(['!=', 'id' , $model->id]);
 }
 
-
 $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
+
 ?>
 
 <div class="admpage-form">
@@ -62,34 +63,88 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
         </header>
         <div class="panel-body">
             <div class="tab-content">
-                <?php  foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) { ?>
+                <?php
+                foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
+                    $modelLang = $model->getTranslation($id_language);
+                    $viewAlias = $model->getAlias();
+                ?>
                     <div class="tab-pane" id="lang-<?= $id_language ?>">
 
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-6">
-                                <?= $form->field($model->getTranslation($id_language), '['.$id_language.']name')->textInput(['maxlength' => 100]) ?>
+                                <?= $form->field($modelLang, '['.$id_language.']name')->textInput(['maxlength' => 100]) ?>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6">
-                                <?= $form->field($model->getTranslation($id_language), '['.$id_language.']title')->textInput(['maxlength' => 80]) ?>
+                                <?= $form->field($modelLang, '['.$id_language.']title')->textInput(['maxlength' => 80]) ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-6">
-                                <?= $form->field($model->getTranslation($id_language), '['.$id_language.']description')->textarea(['maxlength' => 200]) ?>
+                                <?= $form->field($modelLang, '['.$id_language.']description')->textarea(['maxlength' => 200]) ?>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6">
-                                <?= $form->field($model->getTranslation($id_language), '['.$id_language.']keywords')->textarea(['maxlength' => 250]) ?>
+                                <?= $form->field($modelLang, '['.$id_language.']keywords')->textarea(['maxlength' => 250]) ?>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-6">
-                                <?= $form->field($model->getTranslation($id_language), '['.$id_language.']alias')->textInput(['maxlength' => 200]) ?>
+                                <div class="admpage-alias-cont">
+                                    <?= $form->field($modelLang, '['.$id_language.']alias',[
+                                        'options' => [
+                                            'class' => 'form-group' . ($modelLang->url?' hide':'')
+                                        ],
+                                        'template' => '{label}<div class="input-group"><div class="input-group-addon"><a href="javascript:void(0);" class="fa fa-link btn-change-to-link"></a></div>{input}</div>{hint}{error}',
+                                    ])->textInput(['maxlength' => 200]) ?>
+
+
+                                    <?= $form->field($modelLang, '['.$id_language.']url',[
+                                        'options' => [
+                                            'class' => 'form-group' . ($modelLang->url?'':' hide')
+                                        ],
+                                    ])->widget(\kartik\widgets\Select2::classname(), [
+                                        'addon' => [
+                                            'prepend' => ['content' => '<a href="javascript:void(0);" class="fa fa-unlink btn-change-to-alias"></a>', 'options'=>['class'=>'alert-success']],
+                                        ],
+                                        'pluginOptions' => [
+                                            'tags' => true,
+                                            'allowClear' => true,
+                                            'maximumSelectionSize' => 1,
+                                            'createSearchChoice' => new JsExpression('function(term, data) {
+                                                if ($(data).filter(function() {
+                                                    return this.text.localeCompare(term)===0;
+                                                  }).length===0) {
+                                                    return {id:term, text:term};
+                                                  }
+                                            }'),
+                                            'initSelection' => new JsExpression("function (element, callback) {
+                                                callback($.map(element.val().split(','), function (id) {
+                                                    var text = id;
+                                                    ".(!empty($modelLang->url) && $viewAlias !== false ? "text = '" . $viewAlias . "';":"")."
+                                                    console.log(text);
+                                                    console.log(id);
+                                                    return { id: id, text: text };
+                                                }));
+                                            }"),
+                                            'ajax' => [
+                                                'url' => \yii\helpers\Url::to(['alias','page_id' => $model->id]),
+                                                'dataType' => "json",
+                                                'data' => new JsExpression('function(term, page) {
+                                                    return {q: term};
+                                                }'),
+                                                'results' => new JsExpression('function(data, page) {
+                                                    return {results: data};
+                                                }'),
+                                            ],
+                                        ]
+                                    ]); ?>
+                                </div>
+
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <?= Adm::widget('FileInput',[
                                     'form' => $form,
-                                    'model'      => $model->getTranslation($id_language),
+                                    'model'      => $modelLang,
                                     'attribute'  => '['.$id_language.']image',
                                 ]);?>
                             </div>
@@ -99,7 +154,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                             <div class="col-xs-12 col-sm-12 col-md-12">
                             <?= \pavlinter\adm\Adm::widget('Redactor',[
                                 'form' => $form,
-                                'model'      => $model->getTranslation($id_language),
+                                'model'      => $modelLang,
                                 'attribute'  => '['.$id_language.']text'
                             ]) ?>
                             </div>
@@ -126,3 +181,9 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
     <?php Adm::end('ActiveForm'); ?>
 
 </div>
+<?php
+$this->registerJs('
+function admUrlOtAlias(id){
+
+}');
+?>
