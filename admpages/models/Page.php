@@ -158,8 +158,9 @@ class Page extends \yii\db\ActiveRecord
             'registerMetaTag' => true,
             'where' => false,
             'orderBy' => false,
-            'url' => [''],
         ], $config);
+
+
 
         $pageTable = forward_static_call(array(Module::getInstance()->manager->pageClass, 'tableName'));
         
@@ -184,13 +185,18 @@ class Page extends \yii\db\ActiveRecord
         }
 
         if ($config['setLanguageUrl']) {
-            $url = $config['url'];
+            if (!isset($config['url'])) {
+                $url = [''];
+            } else {
+                $url = $config['url'];
+            }
+            
             foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
                 if (is_array($url)) {
-                    $language['url'] = ArrayHelper::merge($config['url'],[
+                    $language['url'] = ArrayHelper::merge($url, [
                         'lang' => $language[Yii::$app->getI18n()->langColCode],
                     ]);
-                    $language['url'] = Yii::$app->getUrlManager()->createUrl($url);
+                    $language['url'] = Yii::$app->getUrlManager()->createUrl($language['url']);
                 } elseif (is_callable($url)) {
                     $language['url'] = call_user_func($url, $model, $id_language, $language);
                 }

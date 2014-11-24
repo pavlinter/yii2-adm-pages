@@ -53,7 +53,6 @@ class DefaultController extends Controller
         $model = Module::getInstance()->manager->createPageQuery('get', null, [
             'where' => ['type' => 'main'],
             'orderBy' => ['weight' => SORT_ASC],
-            'url' => [''],
         ]);
 
         if ($model === false) {
