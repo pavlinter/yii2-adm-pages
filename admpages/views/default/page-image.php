@@ -6,7 +6,8 @@ use pavlinter\admpages\Module;
 /* @var $model \pavlinter\admpages\models\Page */
 
 Module::getInstance()->layout = Module::getInstance()->pageLayout;
-$this->title = $model->title
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = $model->name;
 ?>
 <div class="adm-pages-layout-page-image">
     <h1><?= $model->title ?></h1>

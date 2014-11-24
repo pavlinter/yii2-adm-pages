@@ -14,10 +14,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 {
     public $controllerNamespace = 'pavlinter\admpages\controllers';
 
-    public $pageLayouts = [
-        'page' => 'Page',
-        'page-image' => 'Page + image',
-    ];
+    public $pageLayouts = [];
 
     public $pageTypes = [];
 
@@ -35,19 +32,30 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'page' => Adm::t('admpages/types','Pages'),
                 'main' => Adm::t('admpages/types','Main Page'),
             ],
+            'pageLayouts' => [
+                'page' => Adm::t('admpages/layouts','Page'),
+                'page-image' => Adm::t('admpages/layouts','Page + image'),
+            ],
             'components' => [
                 'manager' => [
                     'class' => 'pavlinter\admpages\ModelManager'
                 ],
             ],
         ], $config);
+
+        if ($config['pageLayouts']['page'] == false) {
+            unset($config['pageLayouts']['page']);
+        }
+        if ($config['pageLayouts']['page-image'] == false) {
+            unset($config['pageLayouts']['page-image']);
+        }
+
         parent::__construct($id, $parent, $config);
     }
 
     public function init()
     {
         parent::init();
-
         // custom initialization code goes here
     }
     /**
