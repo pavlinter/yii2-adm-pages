@@ -59,7 +59,7 @@ class DefaultController extends Controller
         if ($model === false) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-        
+
         return $this->render($model->layout,[
             'model' => $model,
         ]);

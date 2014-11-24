@@ -66,7 +66,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                 <?php
                 foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
                     $modelLang = $model->getTranslation($id_language);
-                    $viewAlias = $model->getAlias();
+                    $viewAlias = $modelLang->getAlias();
                 ?>
                     <div class="tab-pane" id="lang-<?= $id_language ?>">
 

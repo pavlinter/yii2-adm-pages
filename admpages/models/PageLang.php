@@ -84,6 +84,19 @@ class PageLang extends \yii\db\ActiveRecord
         ];
     }
     /**
+     * @return bool|string
+     */
+    public function getAlias()
+    {
+        if ($this->url) {
+            if (strpos($this->url, '//') === 0) {
+                return trim($this->url, '/');
+            }
+            return false;
+        }
+        return $this->alias;
+    }
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getPage()

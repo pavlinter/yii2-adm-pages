@@ -139,16 +139,9 @@ class Page extends \yii\db\ActiveRecord
     /**
      * @return bool|string
      */
-    public function getAlias()
+    public function getAlias($id_language = null)
     {
-        $model = $this->getTranslation();
-        if ($model->url) {
-            if (strpos($model->url, '//') === 0) {
-                return trim($model->url, '/');
-            }
-            return false;
-        }
-        return $model->alias;
+        return $this->getTranslation($id_language)->getAlias();
     }
 
     /**
