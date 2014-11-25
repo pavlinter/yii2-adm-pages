@@ -52,7 +52,10 @@ class PageLang extends \yii\db\ActiveRecord
             [['keywords'], 'string', 'max' => 250],
             [['alias'], 'match', 'pattern' => '/^([A-Za-z0-9_-])+$/'],
             [['alias'], 'unique', 'filter' => function ($query) {
-                return $query->andWhere(['!=', 'page_id', $this->page_id]);
+                if (!$this->isNewRecord) {
+                    $query->andWhere(['!=', 'page_id', $this->page_id]);
+                }
+                return $query;
             }],
         ];
     }
