@@ -23,8 +23,8 @@ class DefaultController extends Controller
         $model = Module::getInstance()->manager->createPageQuery('get', null, [
             'where' => ['alias' => $alias],
             'url' => function ($model, $id_language, $language) {
-                if (isset($model->translations[$id_language])) {
-                    $pageLang = $model->translations[$id_language];
+                if ($model->hasTranslation($id_language)) {
+                    $pageLang = $model->getTranslation($id_language);
                     $url = ['/adm/admpages/default/index', 'alias' => $pageLang->alias];
                 } else {
                     $url = [''];

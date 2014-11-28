@@ -24,6 +24,7 @@ use yii\helpers\ArrayHelper;
  * @method \pavlinter\translation\TranslationBehavior loadLang
  * @method \pavlinter\translation\TranslationBehavior loadLangs
  * @method \pavlinter\translation\TranslationBehavior getTranslation
+ * @method \pavlinter\translation\TranslationBehavior hasTranslation
  *
  * @property string $id
  * @property string $id_parent
