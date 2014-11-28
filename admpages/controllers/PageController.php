@@ -71,7 +71,7 @@ class PageController extends Controller
         if ($model->loadAll($data)) {
             if ($model->validateAll()) {
 
-                if ($model->saveAll()) {
+                if ($model->saveAll(false)) {
                     return $this->redirect(['index', 'id_parent' => 0]);
                 }
             }
