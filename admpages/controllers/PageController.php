@@ -142,39 +142,4 @@ class PageController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
-    /**
-     * @return array
-     */
-    public function actionAlias($q, $page_id)
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $pageTable      = forward_static_call(array(Module::getInstance()->manager->pageClass, 'tableName'));
-        $pageLangTable  = forward_static_call(array(Module::getInstance()->manager->pageLangClass, 'tableName'));
-
-        $query = Module::getInstance()->manager->createPageQuery('find')
-            ->from(['p' => $pageTable])->select('l.alias,l.language_id')
-            ->innerJoin(['l'=> $pageLangTable],'l.page_id = p.id')->with([
-                'translations',
-            ])->where(['like', 'l.alias', $q]);
-
-        if ($page_id) {
-            $query->andWhere(['!=', 'p.id', $page_id]);
-        }
-        $model = $query->limit(10)->all();
-
-        $result = [];
-
-        foreach ($model as $m) {
-            if ($m->alias == '') {
-                continue;
-            }
-            $result[] = [
-                'id' => '//' . $m->alias,
-                'text' => $m->alias,
-            ];
-        }
-        return $result;
-    }
 }

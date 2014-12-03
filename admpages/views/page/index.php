@@ -65,6 +65,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'alias',
                 'vAlign' => 'middle',
                 'hAlign' => 'center',
+                'value' => function ($model) {
+                    if ($model->url) {
+                        return $model->url;
+                    }
+                    return $model->alias;
+                },
             ],
             [
                 'attribute' => 'layout',

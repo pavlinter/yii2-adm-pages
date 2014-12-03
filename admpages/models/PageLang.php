@@ -86,18 +86,19 @@ class PageLang extends \yii\db\ActiveRecord
             'text' => Yii::t('adm/admpages', 'Text'),
         ];
     }
+
     /**
-     * @return bool|string
+     * @param $url
+     * @param string $key
+     * @return mixed
      */
-    public function getAlias()
+    public function url($url, $key = 'alias')
     {
         if ($this->url) {
-            if (strpos($this->url, '//') === 0) {
-                return trim($this->url, '/');
-            }
-            return false;
+            return $this->url;
         }
-        return $this->alias;
+        $url[$key] = $this->alias;
+        return $url;
     }
     /**
      * @return \yii\db\ActiveQuery

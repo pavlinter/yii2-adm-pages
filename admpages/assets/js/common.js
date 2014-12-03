@@ -11,7 +11,7 @@
                 $contAlias.find(":input").val("");
             } else {
                 $contAlias.removeClass("hide");
-                $contUrl.find(":input").select2("val", "");
+                $contUrl.find(":input").val("");
                 $contUrl.addClass("hide");
             }
         });

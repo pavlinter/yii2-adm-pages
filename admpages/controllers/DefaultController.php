@@ -25,7 +25,7 @@ class DefaultController extends Controller
             'url' => function ($model, $id_language, $language) {
                 if ($model->hasTranslation($id_language)) {
                     $pageLang = $model->getTranslation($id_language);
-                    $url = ['/adm/admpages/default/index', 'alias' => $pageLang->alias];
+                    $url = $pageLang->url(['/adm/admpages/default/index']);
                 } else {
                     $url = [''];
                 }

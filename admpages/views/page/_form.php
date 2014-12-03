@@ -66,7 +66,6 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                 <?php
                 foreach (Yii::$app->getI18n()->getLanguages() as $id_language => $language) {
                     $modelLang = $model->getTranslation($id_language);
-                    $viewAlias = $modelLang->getAlias();
                 ?>
                     <div class="tab-pane" id="lang-<?= $id_language ?>">
 
@@ -102,42 +101,8 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                                         'options' => [
                                             'class' => 'form-group' . ($modelLang->url?'':' hide')
                                         ],
-                                    ])->widget(\kartik\widgets\Select2::classname(), [
-                                        'addon' => [
-                                            'prepend' => ['content' => '<a href="javascript:void(0);" class="fa fa-unlink btn-change-to-alias"></a>', 'options'=>['class'=>'alert-success']],
-                                        ],
-                                        'pluginOptions' => [
-                                            'tags' => true,
-                                            'allowClear' => true,
-                                            'maximumSelectionSize' => 1,
-                                            'createSearchChoice' => new JsExpression('function(term, data) {
-                                                if ($(data).filter(function() {
-                                                    return this.text.localeCompare(term)===0;
-                                                  }).length===0) {
-                                                    return {id:term, text:term};
-                                                  }
-                                            }'),
-                                            'initSelection' => new JsExpression("function (element, callback) {
-                                                callback($.map(element.val().split(','), function (id) {
-                                                    var text = id;
-                                                    ".(!empty($modelLang->url) && $viewAlias !== false ? "text = '" . $viewAlias . "';":"")."
-                                                    console.log(text);
-                                                    console.log(id);
-                                                    return { id: id, text: text };
-                                                }));
-                                            }"),
-                                            'ajax' => [
-                                                'url' => \yii\helpers\Url::to(['alias','page_id' => $model->id]),
-                                                'dataType' => "json",
-                                                'data' => new JsExpression('function(term, page) {
-                                                    return {q: term};
-                                                }'),
-                                                'results' => new JsExpression('function(data, page) {
-                                                    return {results: data};
-                                                }'),
-                                            ],
-                                        ]
-                                    ]); ?>
+                                        'template' => '{label}<div class="input-group"><div class="input-group-addon"><a href="javascript:void(0);" class="fa fa-unlink btn-change-to-alias"></a></div>{input}</div>{hint}{error}',
+                                    ])->textInput(['maxlength' => 2000]) ?>
                                 </div>
 
                             </div>
