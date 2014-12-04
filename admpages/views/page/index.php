@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Adm::t('admpage', 'Create Page'), ['create', 'id_parent' => $id_parent], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Adm::t('admpage', 'Create Page'), ['create', 'id_parent' => $id_parent], ['class' => 'btn btn-primary']) ?>
 
         <?= Html::a(Adm::t('admpage', 'All pages'), [''], ['class' => 'btn btn-info']) ?>
 
@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= Adm::widget('GridView',[
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'nestable' => [],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

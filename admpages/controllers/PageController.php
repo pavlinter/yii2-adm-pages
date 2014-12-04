@@ -41,6 +41,19 @@ class PageController extends Controller
     }
 
     /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'nestable' => [
+                'class' => 'pavlinter\adm\actions\GridNestableAction',
+                'model' => Module::getInstance()->manager->pageClass,
+            ]
+        ];
+    }
+
+    /**
      * Lists all Page models.
      * @return mixed
      */
