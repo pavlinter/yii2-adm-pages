@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'nestable' => $id_parent === false ? false : [
-            'buttonsTemplate' => '<div class="pull-right">{view} {update} {subpages} {copy} {delete}</div>',
+            'buttonsTemplate' => '<div class="pull-right">{view} {update} {subpages} {files} {copy} {delete}</div>',
             'buttons' => [
                 'subpages' => function ($url, $that) {
                     return Html::a('<span class="fa fa-plus-circle"></span>', [
@@ -38,6 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'id_parent' => '{id}'
                     ], [
                         'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),
+                        'data-pjax' => '0',
+                    ]);
+                },
+                'files' => function ($url, $that) {
+                    return Html::a('<span class="fa fa-cloud-download"></span>', [
+                        'files',
+                        'id' => '{id}'
+                    ], [
+                        'title' => Adm::t('admpage', 'Files', ['dot' => false]),
                         'data-pjax' => '0',
                     ]);
                 },

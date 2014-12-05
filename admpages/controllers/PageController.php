@@ -61,19 +61,21 @@ class PageController extends Controller
 
         $files = Module::getInstance()->files;
         $startPath = '';
-        if (isset($files[$model->type])) {
-            if (isset($files[$model->type]['startPath'])) {
-                $startPath = strtr($files[$model->type]['startPath'], [
-                    '{id}' => $model->id,
-                ]);
-            }
-            foreach ($files[$model->type]['dirs'] as $path) {
-                $dir = Yii::getAlias(strtr($path, [
-                    '{id}' => $model->id,
-                ]));
-                \yii\helpers\FileHelper::createDirectory($dir);
-            }
+        if (!isset($files[$model->type])) {
+            return $this->redirect(['index', 'id_parent' => 0]);
         }
+        if (isset($files[$model->type]['startPath'])) {
+            $startPath = strtr($files[$model->type]['startPath'], [
+                '{id}' => $model->id,
+            ]);
+        }
+        foreach ($files[$model->type]['dirs'] as $path) {
+            $dir = Yii::getAlias(strtr($path, [
+                '{id}' => $model->id,
+            ]));
+            \yii\helpers\FileHelper::createDirectory($dir);
+        }
+
 
         return $this->render('files', [
             'model' => $model,
