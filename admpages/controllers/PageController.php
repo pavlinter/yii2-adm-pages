@@ -5,11 +5,9 @@ namespace pavlinter\admpages\controllers;
 use pavlinter\adm\filters\AccessControl;
 use pavlinter\admpages\Module;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
 
 /**
  * PageController implements the CRUD actions for Page model.
@@ -51,6 +49,36 @@ class PageController extends Controller
                 'model' => Module::getInstance()->manager->pageClass,
             ]
         ];
+    }
+
+    /**
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionFiles($id)
+    {
+        $model = $this->findModel($id);
+
+        $files = Module::getInstance()->files;
+        $startPath = '';
+        if (isset($files[$model->type])) {
+            if (isset($files[$model->type]['startPath'])) {
+                $startPath = strtr($files[$model->type]['startPath'], [
+                    '{id}' => $model->id,
+                ]);
+            }
+            foreach ($files[$model->type]['dirs'] as $path) {
+                $dir = Yii::getAlias(strtr($path, [
+                    '{id}' => $model->id,
+                ]));
+                \yii\helpers\FileHelper::createDirectory($dir);
+            }
+        }
+
+        return $this->render('files', [
+            'model' => $model,
+            'startPath' => $startPath,
+        ]);
     }
 
     /**

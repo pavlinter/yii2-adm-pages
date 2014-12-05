@@ -20,6 +20,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public $pageLayout = '/main';
 
+    public $files = [];
+
     public $closeDeletePage = []; //id [2,130]
 
     /**
@@ -31,6 +33,20 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'pageTypes' => [
                 'page' => Adm::t('admpages/types','Pages'),
                 'main' => Adm::t('admpages/types','Main Page'),
+            ],
+            'files' => [
+                'page' => [
+                    'dirs' => [
+                        '@webroot/files/pages/{id}/gallery'// {id} - id page
+                    ],
+                    'startPath' => 'pages::{id}', // where :: replace to /
+                ],
+                'main' => [
+                    'dirs' => [
+                        '@webroot/files/pages/{id}/gallery'
+                    ],
+                    'startPath' => 'pages::{id}',
+                ],
             ],
             'pageLayouts' => [
                 'page' => Adm::t('admpages/layouts','Page'),
@@ -48,6 +64,12 @@ class Module extends \yii\base\Module implements BootstrapInterface
         }
         if ($config['pageLayouts']['page-image'] == false) {
             unset($config['pageLayouts']['page-image']);
+        }
+        if ($config['files']['page'] == false) {
+            unset($config['files']['page']);
+        }
+        if ($config['files']['main'] == false) {
+            unset($config['files']['main']);
         }
 
         parent::__construct($id, $parent, $config);

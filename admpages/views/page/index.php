@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => '\kartik\grid\ActionColumn',
                 'width' => '130px',
-                'template' => '{view} {update} {subpages} {copy} {delete}',
+                'template' => '{view} {update} {subpages} {files} {copy} {delete}',
                 'buttons' => [
                     'delete' => function ($url, $model) {
                         if (in_array($model->id, Module::getInstance()->closeDeletePage)) {
@@ -177,6 +177,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'subpages' => function ($url, $model) {
                         return Html::a('<span class="fa fa-plus-circle"></span>', ['', 'id_parent' => $model->id], [
                             'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),
+                            'data-pjax' => '0',
+                        ]);
+                    },
+                    'files' => function ($url, $model) {
+                        if (!isset(Module::getInstance()->files[$model->type])) {
+                            return null;
+                        }
+                        return Html::a('<span class="fa fa-cloud-download"></span>', ['files', 'id' => $model->id], [
+                            'title' => Adm::t('appadm', 'Files', ['dot' => false]),
                             'data-pjax' => '0',
                         ]);
                     },
