@@ -147,7 +147,7 @@ class Page extends \yii\db\ActiveRecord
      */
     public function shortText($onlyshort = false)
     {
-        $pos = strpos($this->text, self::$textBreak, 1);
+        $pos = strpos($this->text, self::$textBreak);
         if ($pos !== false) {
             return \yii\helpers\StringHelper::truncate($this->text, $pos, null);
         }
@@ -163,7 +163,7 @@ class Page extends \yii\db\ActiveRecord
      */
     public function text($encoding = null)
     {
-        $pos = strpos($this->text, self::$textBreak, 1);
+        $pos = strpos($this->text, self::$textBreak);
         if ($pos !== false) {
             return mb_substr($this->text, $pos, null, $encoding ?: Yii::$app->charset);
         }

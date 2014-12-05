@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $model->name;
                 }
             ?>
         </div>
-        <div class="col-md-6"><?= $model->text ?></div>
+        <div class="col-md-6"><?= $model->text() ?></div>
     </div>
 
 </div>
