@@ -29,7 +29,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= Adm::widget('GridView',[
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'nestable' => [],
+        'nestable' => $id_parent === false ? false : [
+            'buttonsTemplate' => '<div class="pull-right">{view} {update} {subpages} {copy} {delete}</div>',
+            'buttons' => [
+                'subpages' => function ($url, $that) {
+                    return Html::a('<span class="fa fa-plus-circle"></span>', [
+                        '',
+                        'id_parent' => '{id}'
+                    ], [
+                        'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),
+                        'data-pjax' => '0',
+                    ]);
+                },
+            ],
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
