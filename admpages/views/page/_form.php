@@ -48,9 +48,19 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                 'data' => Module::getInstance()->pageTypes,
             ]); ?>
         </div>
+
         <div class="col-xs-12 col-sm-6 col-md-3">
-            <?= $form->field($model, 'weight')->textInput(['maxlength' => 10]) ?>
+            <?= $form->field($model, 'date')->widget(\kartik\datetime\DateTimePicker::classname(), [
+                'pluginOptions' => [
+                    'todayHighlight' => true,
+                    'todayBtn' => true,
+                    'autoclose' => true,
+                    'minuteStep' => 1,
+                    'format' => 'yyyy-mm-dd hh:ii:00'
+                ]
+            ]); ?>
         </div>
+
     </div>
 
     <section class="panel adm-langs-panel">
@@ -132,9 +142,12 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
 
         <div class="row">
             <div class="col-xs-6 col-sm-4 col-md-4">
+                <?= $form->field($model, 'weight')->textInput(['maxlength' => 10]) ?>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-4 form-without-label">
                 <?= $form->field($model, 'active', ["template" => "{input}\n{label}\n{hint}\n{error}"])->widget(CheckboxX::classname(), ['pluginOptions'=>['threeState' => false]]); ?>
             </div>
-            <div class="col-xs-6 col-sm-4 col-md-4">
+            <div class="col-xs-6 col-sm-4 col-md-4 form-without-label">
                 <?= $form->field($model, 'visible', ["template" => "{input}\n{label}\n{hint}\n{error}"])->widget(CheckboxX::classname(), ['pluginOptions'=>['threeState' => false]]); ?>
             </div>
         </div>

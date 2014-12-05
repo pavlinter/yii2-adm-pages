@@ -20,6 +20,7 @@ class m141119_115055_adm_pages extends Migration
             'weight' => Schema::TYPE_INTEGER,
             'visible' => Schema::TYPE_SMALLINT . "(1) NOT NULL DEFAULT '1'",
             'active' => Schema::TYPE_SMALLINT . "(1) NOT NULL DEFAULT '1'",
+            'date' => Schema::TYPE_DATETIME . " NULL",
             'created_at' => Schema::TYPE_TIMESTAMP . " NOT NULL",
             'updated_at' => Schema::TYPE_TIMESTAMP . " NOT NULL",
         ], $tableOptions);

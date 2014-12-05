@@ -33,6 +33,7 @@ use yii\helpers\ArrayHelper;
  * @property string $weight
  * @property integer $visible
  * @property integer $active
+ * @property string $date
  *
  * Translation
  * @property string $name
@@ -49,6 +50,7 @@ use yii\helpers\ArrayHelper;
  */
 class Page extends \yii\db\ActiveRecord
 {
+    static $textBreak = '<div style="page-break-after: always"><span style="display:none">&nbsp;</span></div>';
     /**
      * @inheritdoc
      */
@@ -93,6 +95,7 @@ class Page extends \yii\db\ActiveRecord
             [['id_parent', 'weight', 'visible', 'active'], 'integer'],
             [['layout', 'type'], 'required'],
             [['layout', 'type'], 'string', 'max' => 50],
+            [['date'], 'date', 'format' => 'yyyy-MM-dd HH:mm:ss'],
             [['layout'], 'in', 'range' => array_keys(Module::getInstance()->pageLayouts)],
             [['type'], 'in', 'range' => array_keys(Module::getInstance()->pageTypes)],
         ];
@@ -118,6 +121,7 @@ class Page extends \yii\db\ActiveRecord
             'weight' => Yii::t('adm/admpages', 'Weight'),
             'visible' => Yii::t('adm/admpages', 'Visible'),
             'active' => Yii::t('adm/admpages', 'Active'),
+            'date' => Yii::t('adm/admpages', 'Date'),
         ];
     }
 
@@ -135,6 +139,35 @@ class Page extends \yii\db\ActiveRecord
             $this->weight = $query->scalar() + 50;
         }
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * @param bool $onlyshort
+     * @return bool|string
+     */
+    public function shortText($onlyshort = false)
+    {
+        $pos = strpos($this->text, self::$textBreak, 1);
+        if ($pos !== false) {
+            return \yii\helpers\StringHelper::truncate($this->text, $pos, null);
+        }
+        if ($onlyshort) {
+            return false;
+        }
+        return $this->text;
+    }
+
+    /**
+     * @param null $encoding
+     * @return string
+     */
+    public function text($encoding = null)
+    {
+        $pos = strpos($this->text, self::$textBreak, 1);
+        if ($pos !== false) {
+            return mb_substr($this->text, $pos, null, $encoding ?: Yii::$app->charset);
+        }
+        return $this->text;
     }
 
     /**
