@@ -125,12 +125,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'weight',
+                'width' => '50px',
                 'vAlign' => 'middle',
                 'hAlign' => 'center',
             ],
             [
                 'class' => '\kartik\grid\BooleanColumn',
                 'attribute' => 'active',
+                'width' => '50px',
                 'vAlign' => 'middle',
                 'hAlign' => 'center',
                 'filterType' => GridView::FILTER_SELECT2,
@@ -142,7 +144,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class' => '\kartik\grid\ActionColumn',
+                'width' => '130px',
                 'template' => '{view} {update} {subpages} {copy} {delete}',
                 'buttons' => [
                     'delete' => function ($url, $model) {
