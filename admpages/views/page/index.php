@@ -21,9 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Adm::t('admpage', 'Create Page'), ['create', 'id_parent' => $id_parent], ['class' => 'btn btn-primary']) ?>
 
-        <?= Html::a(Adm::t('admpage', 'All pages'), [''], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Adm::t('admpage', 'All pages'), [''], ['class' => 'btn btn-primary']) ?>
 
-        <?= Html::a(Adm::t('admpage', 'Front pages'), ['','id_parent' => 0,], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Adm::t('admpage', 'Front pages'), ['','id_parent' => 0,], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= Adm::widget('GridView',[
