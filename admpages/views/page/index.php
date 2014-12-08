@@ -24,12 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Adm::t('admpage', 'All pages'), [''], ['class' => 'btn btn-primary']) ?>
 
         <?= Html::a(Adm::t('admpage', 'Front pages'), ['','id_parent' => 0,], ['class' => 'btn btn-primary']) ?>
+
+        <?= Html::a('!', '#', ['class' => 'btn btn-primary btn-adm-nestable-view']) ?>
     </p>
 
     <?= Adm::widget('GridView',[
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'nestable' => $id_parent === false ? false : [
+            'btn' => false, //hide btn
             'buttonsTemplate' => '<div class="pull-right">{view} {update} {subpages} {files} {copy} {delete}</div>',
             'buttons' => [
                 'subpages' => function ($url, $that) {
