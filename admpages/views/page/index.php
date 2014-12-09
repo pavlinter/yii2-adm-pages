@@ -12,6 +12,7 @@ use pavlinter\adm\Adm;
 $this->title = Adm::t('admpage', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
 
+
 ?>
 <div class="page-index">
 
@@ -32,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'nestable' => $id_parent === false ? false : [
+            'id' => 'pages-nestable-grid',
             'btn' => false, //hide btn
             'buttonsTemplate' => '<div class="pull-right">{view} {update} {subpages} {files} {copy} {delete}</div>',
             'buttons' => [
