@@ -115,7 +115,7 @@ class PageController extends Controller
             if ($model->validateAll()) {
 
                 if ($model->saveAll(false)) {
-                    return $this->redirect(['index', 'id_parent' => 0]);
+                    return $this->redirect(['files', 'id' => $model->id]);
                 }
             }
         } else {
@@ -145,7 +145,7 @@ class PageController extends Controller
         $model = $this->findModel($id);
         if ($model->loadAll(Yii::$app->request->post()) && $model->validateAll()) {
             if ($model->saveAll(false)) {
-                return $this->redirect(['index', 'id_parent' => 0]);
+                return $this->redirect(['files', 'id' => $model->id]);
             }
         }
 
