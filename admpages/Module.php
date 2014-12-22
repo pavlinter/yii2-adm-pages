@@ -92,6 +92,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'url' => ['/' . $adm->id . '/admpages/page/index', 'id_parent' => 0]
             ];
         }
+
     }
 
     /**

@@ -159,9 +159,3 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
     <?php Adm::end('ActiveForm'); ?>
 
 </div>
-<?php
-$this->registerJs('
-function admUrlOtAlias(id){
-
-}');
-?>
