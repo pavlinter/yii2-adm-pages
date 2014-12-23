@@ -97,7 +97,9 @@ class PageLang extends \yii\db\ActiveRecord
         if ($this->url) {
             return $this->url;
         }
-        $url[$key] = $this->alias;
+        if ($key) {
+            $url[$key] = $this->alias;
+        }
         return $url;
     }
     /**

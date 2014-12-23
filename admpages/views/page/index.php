@@ -173,7 +173,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'view' => function ($url, $model) {
                         if ($model->alias) {
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['default/index', 'alias' => $model->alias], [
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $model->url(), [
                                 'title' => Yii::t('yii', 'View'),
                                 'data-pjax' => '0',
                                 'target' => '_blank'

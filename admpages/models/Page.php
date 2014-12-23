@@ -47,6 +47,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property PageLang[] $translations
  * @property Page $parent
+ * @property Page[] $childs
  */
 class Page extends \yii\db\ActiveRecord
 {
@@ -176,8 +177,14 @@ class Page extends \yii\db\ActiveRecord
      * @param string $key
      * @return mixed
      */
-    public function url($url, $id_language = null, $key = 'alias')
+    public function url($url = true, $id_language = null, $key = 'alias')
     {
+        if ($url === true) {
+            $url = Module::getInstance()->pageUrl;
+        } else if($url === null) {
+            $url = Module::getInstance()->mainPageUrl;
+            $key = false;
+        }
         return $this->getTranslation($id_language)->url($url, $key);
     }
 
@@ -262,5 +269,12 @@ class Page extends \yii\db\ActiveRecord
     public function getParent()
     {
         return $this->hasOne(Module::getInstance()->manager->pageClass, ['id' => 'id_parent']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChilds()
+    {
+        return $this->hasMany(Module::getInstance()->manager->pageClass, ['id_parent' => 'id']);
     }
 }

@@ -24,6 +24,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public $closeDeletePage = []; //id [2,130]
 
+    public $pageUrl;
+
+    public $mainPageUrl;
+
     /**
      * @inheritdoc
      */
