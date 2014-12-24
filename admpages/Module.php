@@ -3,6 +3,7 @@
 namespace pavlinter\admpages;
 
 use pavlinter\adm\Adm;
+use pavlinter\adm\AdmBootstrapInterface;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
@@ -10,7 +11,7 @@ use yii\helpers\ArrayHelper;
 /**
  * @property \pavlinter\admpages\ModelManager $manager
  */
-class Module extends \yii\base\Module implements BootstrapInterface
+class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstrapInterface
 {
     public $controllerNamespace = 'pavlinter\admpages\controllers';
 
@@ -91,6 +92,15 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function bootstrap($adm)
     {
+        echo 'admpage-bootstrap' . '<br />';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function loading($adm)
+    {
+        echo 'admpage-loading' . '<br />';
         /* @var $adm \pavlinter\adm\Adm */
         if ($adm->user->can('Adm-Pages')) {
             $adm->params['left-menu']['admpages'] = [
