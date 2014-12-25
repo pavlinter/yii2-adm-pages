@@ -1,15 +1,15 @@
 <?php
 
 use kartik\grid\GridView;
+use pavlinter\adm\Adm;
 use pavlinter\admpages\Module;
 use yii\helpers\Html;
-use pavlinter\adm\Adm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Adm::t('admpage', 'Pages');
+$this->title = Module::t('', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -20,11 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Adm::t('admpage', 'Create Page'), ['create', 'id_parent' => $id_parent], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('', 'Create Page'), ['create', 'id_parent' => $id_parent], ['class' => 'btn btn-primary']) ?>
 
-        <?= Html::a(Adm::t('admpage', 'All pages'), [''], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('', 'All pages'), [''], ['class' => 'btn btn-primary']) ?>
 
-        <?= Html::a(Adm::t('admpage', 'Front pages'), ['','id_parent' => 0,], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('', 'Front pages'), ['','id_parent' => 0,], ['class' => 'btn btn-primary']) ?>
 
         <?= Html::a('!', '#', ['class' => 'btn btn-primary btn-adm-nestable-view']) ?>
     </p>
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         '',
                         'id_parent' => '{id}'
                     ], [
-                        'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),
+                        'title' => Module::t('', 'Sub pages', ['dot' => false]),
                         'data-pjax' => '0',
                     ]);
                 },
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'files',
                         'id' => '{id}'
                     ], [
-                        'title' => Adm::t('admpage', 'Files', ['dot' => false]),
+                        'title' => Module::t('', 'Files', ['dot' => false]),
                         'data-pjax' => '0',
                     ]);
                 },
@@ -115,7 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' =>true ],
                 ],
-                'filterInputOptions' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                'filterInputOptions' => ['placeholder' => Module::t('','Select ...', ['dot' => false])],
                 'format' => 'raw'
             ],
             [
@@ -132,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' =>true ],
                 ],
-                'filterInputOptions' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                'filterInputOptions' => ['placeholder' => Module::t('','Select ...', ['dot' => false])],
                 'format' => 'raw'
             ],
             [
@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'hAlign' => 'center',
                 'filterType' => GridView::FILTER_SELECT2,
                 'filterWidgetOptions' => [
-                    'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                    'options' => ['placeholder' => Module::t('','Select ...', ['dot' => false])],
                     'pluginOptions' => [
                         'allowClear' => true
                     ],
@@ -165,8 +165,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             return null;
                         }
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                            'title' => Yii::t('yii', 'Delete'),
-                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            'title' => Module::t('title', 'Delete', ['dot' => false]),
+                            'data-confirm' => Module::t('', 'Are you sure you want to delete this item?'),
                             'data-method' => 'post',
                             'data-pjax' => '0',
                         ]);
@@ -174,7 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'view' => function ($url, $model) {
                         if ($model->alias) {
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $model->url(), [
-                                'title' => Yii::t('yii', 'View'),
+                                'title' => Module::t('title', 'View', ['dot' => false]),
                                 'data-pjax' => '0',
                                 'target' => '_blank'
                             ]);
@@ -182,13 +182,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'copy' => function ($url, $model) {
                         return Html::a('<span class="fa fa-copy"></span>', ['create', 'id' => $model->id], [
-                            'title' => Adm::t('admpage', 'Copy', ['dot' => false]),
+                            'title' => Module::t('title', 'Copy', ['dot' => false]),
                             'data-pjax' => '0',
                         ]);
                     },
                     'subpages' => function ($url, $model) {
                         return Html::a('<span class="fa fa-plus-circle"></span>', ['', 'id_parent' => $model->id], [
-                            'title' => Adm::t('admpage', 'Sub pages', ['dot' => false]),
+                            'title' => Module::t('title', 'Sub pages', ['dot' => false]),
                             'data-pjax' => '0',
                         ]);
                     },
@@ -197,7 +197,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return null;
                         }
                         return Html::a('<span class="fa fa-cloud-download"></span>', ['files', 'id' => $model->id], [
-                            'title' => Adm::t('appadm', 'Files', ['dot' => false]),
+                            'title' => Module::t('title', 'Files', ['dot' => false]),
                             'data-pjax' => '0',
                         ]);
                     },

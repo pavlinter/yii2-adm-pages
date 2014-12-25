@@ -153,7 +153,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
         </div>
 
         <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Adm::t('admpage', 'Create') : Adm::t('admpage', 'Update'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Module::t('admpage', 'Create') : Module::t('admpage', 'Update'), ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php Adm::end('ActiveForm'); ?>

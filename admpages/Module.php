@@ -2,7 +2,6 @@
 
 namespace pavlinter\admpages;
 
-use pavlinter\adm\Adm;
 use pavlinter\adm\AdmBootstrapInterface;
 use Yii;
 use yii\base\BootstrapInterface;
@@ -31,15 +30,19 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
 
     public $mainPageUrl;
 
+    public $layout = '@vendor/pavlinter/yii2-adm/adm/views/layouts/main';
+
     /**
      * @inheritdoc
      */
     public function __construct($id, $parent = null, $config = [])
     {
+        $this->registerTranslations();
+
         $config = ArrayHelper::merge([
             'pageTypes' => [
-                'page' => Adm::t('admpages/types','Pages'),
-                'main' => Adm::t('admpages/types','Main Page'),
+                'page' => self::t('types','Pages'),
+                'main' => self::t('types','Main Page'),
             ],
             'files' => [
                 'page' => [
@@ -56,8 +59,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
                 ],
             ],
             'pageLayouts' => [
-                'page' => Adm::t('admpages/layouts','Page'),
-                'page-image' => Adm::t('admpages/layouts','Page + image'),
+                'page' => self::t('layouts','Page'),
+                'page-image' => self::t('layouts','Page + image'),
             ],
             'components' => [
                 'manager' => [
@@ -87,25 +90,25 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
         parent::init();
         // custom initialization code goes here
     }
-    /**
-     * @inheritdoc
-     */
-    public function bootstrap($adm)
-    {
-        echo 'admpage-bootstrap' . '<br />';
-    }
 
     /**
      * @inheritdoc
+     * @param \yii\base\Application $app
+     */
+    public function bootstrap($app)
+    {
+
+    }
+
+    /**
+     * @param \pavlinter\adm\Adm $adm
      */
     public function loading($adm)
     {
-        echo 'admpage-loading' . '<br />';
-        /* @var $adm \pavlinter\adm\Adm */
         if ($adm->user->can('Adm-Pages')) {
             $adm->params['left-menu']['admpages'] = [
-                'label' => '<i class="fa fa-file-text"></i><span>' . $adm::t('admpages','Pages') . '</span>',
-                'url' => ['/' . $adm->id . '/admpages/page/index', 'id_parent' => 0]
+                'label' => '<i class="fa fa-file-text"></i><span>' . self::t('', 'Pages') . '</span>',
+                'url' => ['/admpages/page/index', 'id_parent' => 0]
             ];
         }
 
@@ -116,7 +119,39 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
      */
     public function beforeAction($action)
     {
-        PageAsset::register(Yii::$app->getView());
+        if ($action->controller->id !== 'default') {
+            Yii::$app->getModule('adm');
+            PageAsset::register(Yii::$app->getView());
+        }
         return parent::beforeAction($action);
+    }
+
+    /**
+     *
+     */
+    public function registerTranslations()
+    {
+        if (!isset(Yii::$app->i18n->translations['admpages/*'])) {
+            Yii::$app->i18n->translations['admpages/*'] = [
+                'class' => 'pavlinter\translation\DbMessageSource',
+                'forceTranslation' => true,
+            ];
+        }
+    }
+    /**
+     * @param $category
+     * @param $message
+     * @param array $params
+     * @param null $language
+     * @return string
+     */
+    public static function t($category, $message, $params = [], $language = null)
+    {
+        if ($category) {
+            $category = 'admpages/' . $category;
+        } else {
+            $category = 'admpages';
+        }
+        return Yii::t($category, $message, $params, $language);
     }
 }

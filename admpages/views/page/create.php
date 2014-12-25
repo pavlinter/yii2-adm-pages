@@ -1,15 +1,13 @@
 <?php
 
+use pavlinter\admpages\Module;
 use yii\helpers\Html;
-use pavlinter\adm\Adm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
 
-$this->title = Adm::t('admpage', 'Create {modelClass}', [
-    'modelClass' => 'Page',
-]);
-$this->params['breadcrumbs'][] = ['label' => Adm::t('admpage', 'Pages'), 'url' => ['index']];
+$this->title = Module::t('', 'Create Page');
+$this->params['breadcrumbs'][] = ['label' => Module::t('', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-create">

@@ -1,5 +1,6 @@
 <?php
 
+use pavlinter\admpages\Module;
 use yii\helpers\Html;
 use pavlinter\adm\Adm;
 use mihaildev\elfinder\Assets;
@@ -10,9 +11,9 @@ use mihaildev\elfinder\Assets;
 
 $this->title = $model->name;
 
-$this->params['breadcrumbs'][] = ['label' => Adm::t('admpage', 'Pages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['update', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Adm::t('admpage', 'Files');
+$this->params['breadcrumbs'][] = Module::t('', 'Files');
 
 
 Assets::register($this);
@@ -34,11 +35,11 @@ $this->registerJs('
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Adm::t('admpage', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Adm::t('admpage', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Module::t('', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Adm::t('admpage', 'Are you sure you want to delete this item?'),
+                'confirm' => Module::t('', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>

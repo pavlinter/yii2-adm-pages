@@ -195,7 +195,6 @@ class Page extends \yii\db\ActiveRecord
      */
     public static function get($id, $config = [])
     {
-        Yii::$app->getModule('adm'); // load module
         $config = ArrayHelper::merge([
             'type' => 'page',
             'setLanguageUrl' => true,

@@ -22,7 +22,7 @@ class PageAction extends Action
      */
     public function init()
     {
-        Yii::$app->getModule('adm');
+        Yii::$app->getModule('admpages');
     }
 
     /**
