@@ -16,6 +16,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public $pageLayouts = [];
 
+    public $pageRedirect = [];
+
     public $pageTypes = [];
 
     public $pageLayout = '/main';

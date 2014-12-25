@@ -5,6 +5,7 @@ namespace pavlinter\admpages\actions;
 use pavlinter\admpages\Module;
 use Yii;
 use yii\base\Action;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -30,9 +31,12 @@ class PageAction extends Action
      */
     public function run($alias = '')
     {
-        /* @var \pavlinter\admpages\models\Page $model */
+        /* @var $module \pavlinter\admpages\Module */
+        $module = Module::getInstance();
+
+        /* @var $model \pavlinter\admpages\models\Page */
         if ($this->isMainPage) {
-            $model = Module::getInstance()->manager->createPageQuery('get', null, [
+            $model = $module->manager->createPageQuery('get', null, [
                 'where' => ['type' => 'main'],
                 'orderBy' => ['weight' => SORT_ASC],
             ]);
@@ -40,7 +44,7 @@ class PageAction extends Action
             if ($alias === '') {
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
-            $model = Module::getInstance()->manager->createPageQuery('get', null, [
+            $model = $module->manager->createPageQuery('get', null, [
                 'where' => ['alias' => $alias],
                 'url' => function ($model, $id_language, $language) {
                     if ($model->hasTranslation($id_language)) {
@@ -56,6 +60,23 @@ class PageAction extends Action
 
         if ($model === false) {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if (isset($module->pageRedirect[$model->layout])) {
+            $params = $module->pageRedirect[$model->layout];
+            $route  = ArrayHelper::remove($params, 0);
+            $params['page'] = $model;
+            $app = Yii::$app;
+            $result = $app->runAction($route, $params);
+            if ($result instanceof \yii\web\Response) {
+                return $result;
+            } else {
+                $response = $app->getResponse();
+                if ($result !== null) {
+                    $response->data = $result;
+                }
+                return $response;
+            }
         }
 
         return $this->controller->render('@vendor/pavlinter/yii2-adm-pages/admpages/views/default/' . $model->layout, [
