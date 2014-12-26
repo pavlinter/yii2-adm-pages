@@ -23,6 +23,7 @@ Yii2: Adm-Pages Модуль для Adm CMS
                    'page' => 'Page',
                    'page-image' => 'Page + image',
                 ],
+                'pageRedirect' => [],
                 'pageTypes' => [],
                 'pageLayout' => '/main',
                 'closeDeletePage' => [] //id [2,130]
@@ -38,33 +39,12 @@ Yii2: Adm-Pages Модуль для Adm CMS
     'urlManager' => [
         ....
         'rules'=>[
-            '' => 'site/main-page',
-            'page/<alias:([A-Za-z0-9_-])+>' => 'site/page',
+            '' => 'admpages/default/main', //OR $config['defaultRoute'] = 'admpages/default/main';
+            'page/<alias:([A-Za-z0-9_-])+>' => 'admpages/default/index',
         ],
     ],
     ...
 ],
-```
-
-```php
-//SiteController
-class SiteController extends Controller
-{
-    ...
-    public function actions()
-    {
-        return [
-            'page' => [
-                'class' => 'pavlinter\admpages\actions\PageAction',
-            ],
-            'main-page' => [
-                'class' => 'pavlinter\admpages\actions\PageAction',
-                'isMainPage' => true,
-            ],
-        ];
-    }
-    ...
-}
 ```
 
 Запустить миграцию
@@ -76,5 +56,5 @@ yii migrate --migrationPath=@vendor/pavlinter/yii2-adm-pages/admpages/migrations
 Как использовать
 -------------
 ```php
-echo Html::a('My-Page',['site/page', 'alias' => 'My-Page']);
+echo Html::a('My-Page',['/admpages/default/index', 'alias' => 'My-Page']);
 ```

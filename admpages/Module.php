@@ -14,7 +14,20 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
     public $controllerNamespace = 'pavlinter\admpages\controllers';
 
     public $pageLayouts = [];
-
+    /**
+     *  'pageLayouts' => [
+     *   'contact' => 'Contact',
+     *  ],
+     *  'pageRedirect' => [
+     *   'contact' => ['site/contact'],
+     *  ],
+     *
+     *  @param \pavlinter\admpages\models\Page $page
+     *  public function actionContact($page)
+     *  {
+     *
+     *  }
+     */
     public $pageRedirect = [];
 
     public $pageTypes = [];
