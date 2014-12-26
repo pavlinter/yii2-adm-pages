@@ -4,13 +4,12 @@ namespace pavlinter\admpages;
 
 use pavlinter\adm\AdmBootstrapInterface;
 use Yii;
-use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
 
 /**
  * @property \pavlinter\admpages\ModelManager $manager
  */
-class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstrapInterface
+class Module extends \yii\base\Module implements AdmBootstrapInterface
 {
     public $controllerNamespace = 'pavlinter\admpages\controllers';
 
@@ -26,10 +25,6 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
 
     public $closeDeletePage = []; //id [2,130]
 
-    public $pageUrl;
-
-    public $mainPageUrl;
-
     public $layout = '@vendor/pavlinter/yii2-adm/adm/views/layouts/main';
 
     /**
@@ -41,8 +36,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
 
         $config = ArrayHelper::merge([
             'pageTypes' => [
-                'page' => self::t('types','Pages'),
-                'main' => self::t('types','Main Page'),
+                'page' => self::t('types','Pages', ['dot' => false]),
+                'main' => self::t('types','Main Page', ['dot' => false]),
             ],
             'files' => [
                 'page' => [
@@ -59,8 +54,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
                 ],
             ],
             'pageLayouts' => [
-                'page' => self::t('layouts','Page'),
-                'page-image' => self::t('layouts','Page + image'),
+                'page' => self::t('layouts','Page', ['dot' => false]),
+                'page-image' => self::t('layouts','Page + image', ['dot' => false]),
             ],
             'components' => [
                 'manager' => [
@@ -92,15 +87,6 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
     }
 
     /**
-     * @inheritdoc
-     * @param \yii\base\Application $app
-     */
-    public function bootstrap($app)
-    {
-
-    }
-
-    /**
      * @param \pavlinter\adm\Adm $adm
      */
     public function loading($adm)
@@ -111,7 +97,6 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
                 'url' => ['/admpages/page/index', 'id_parent' => 0]
             ];
         }
-
     }
 
     /**
@@ -120,7 +105,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
     public function beforeAction($action)
     {
         if ($action->controller->id !== 'default') {
-            Yii::$app->getModule('adm');
+            Yii::$app->getModule('adm'); //required load adm,if use adm layout
             PageAsset::register(Yii::$app->getView());
         }
         return parent::beforeAction($action);
@@ -131,10 +116,12 @@ class Module extends \yii\base\Module implements BootstrapInterface, AdmBootstra
      */
     public function registerTranslations()
     {
-        if (!isset(Yii::$app->i18n->translations['admpages/*'])) {
-            Yii::$app->i18n->translations['admpages/*'] = [
+        if (!isset(Yii::$app->i18n->translations['admpages*'])) {
+            Yii::$app->i18n->translations['admpages*'] = [
                 'class' => 'pavlinter\translation\DbMessageSource',
                 'forceTranslation' => true,
+                'autoInsert' => true,
+                'dotMode' => true,
             ];
         }
     }

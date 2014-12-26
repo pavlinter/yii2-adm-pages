@@ -116,13 +116,13 @@ class Page extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('adm/admpages', 'ID'),
-            'id_parent' => Yii::t('adm/admpages', 'Parent'),
-            'layout' => Yii::t('adm/admpages', 'Layout'),
-            'weight' => Yii::t('adm/admpages', 'Weight'),
-            'visible' => Yii::t('adm/admpages', 'Visible'),
-            'active' => Yii::t('adm/admpages', 'Active'),
-            'date' => Yii::t('adm/admpages', 'Date'),
+            'id' => Yii::t('modelAdm/admpages', 'ID'),
+            'id_parent' => Yii::t('modelAdm/admpages', 'Parent'),
+            'layout' => Yii::t('modelAdm/admpages', 'Layout'),
+            'weight' => Yii::t('modelAdm/admpages', 'Weight'),
+            'visible' => Yii::t('modelAdm/admpages', 'Visible'),
+            'active' => Yii::t('modelAdm/admpages', 'Active'),
+            'date' => Yii::t('modelAdm/admpages', 'Date'),
         ];
     }
 

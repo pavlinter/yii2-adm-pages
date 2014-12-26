@@ -74,16 +74,16 @@ class PageLang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('adm/admpages', 'ID'),
-            'page_id' => Yii::t('adm/admpages', 'Page ID'),
-            'language_id' => Yii::t('adm/admpages', 'Language ID'),
-            'name' => Yii::t('adm/admpages', 'Name'),
-            'title' => Yii::t('adm/admpages', 'Title'),
-            'description' => Yii::t('adm/admpages', 'Description'),
-            'keywords' => Yii::t('adm/admpages', 'Keywords'),
-            'image' => Yii::t('adm/admpages', 'Image'),
-            'alias' => Yii::t('adm/admpages', 'Alias'),
-            'text' => Yii::t('adm/admpages', 'Text'),
+            'id' => Yii::t('modelAdm/admpages', 'ID'),
+            'page_id' => Yii::t('modelAdm/admpages', 'Page ID'),
+            'language_id' => Yii::t('modelAdm/admpages', 'Language ID'),
+            'name' => Yii::t('modelAdm/admpages', 'Name'),
+            'title' => Yii::t('modelAdm/admpages', 'Title'),
+            'description' => Yii::t('modelAdm/admpages', 'Description'),
+            'keywords' => Yii::t('modelAdm/admpages', 'Keywords'),
+            'image' => Yii::t('modelAdm/admpages', 'Image'),
+            'alias' => Yii::t('modelAdm/admpages', 'Alias'),
+            'text' => Yii::t('modelAdm/admpages', 'Text'),
         ];
     }
 

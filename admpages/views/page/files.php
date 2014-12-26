@@ -2,19 +2,19 @@
 
 use pavlinter\admpages\Module;
 use yii\helpers\Html;
-use pavlinter\adm\Adm;
 use mihaildev\elfinder\Assets;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
 /* @var $startPath string */
 
+Yii::$app->i18n->disableDot();
 $this->title = $model->name;
 
 $this->params['breadcrumbs'][] = ['label' => Module::t('', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['update', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Module::t('', 'Files');
-
+Yii::$app->i18n->enableDot();
 
 Assets::register($this);
 Assets::addLangFile(Yii::$app->language, $this);

@@ -9,9 +9,10 @@ use yii\helpers\Html;
 /* @var $searchModel app\models\PageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+Yii::$app->i18n->disableDot();
 $this->title = Module::t('', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
-
+Yii::$app->i18n->enableDot();
 
 ?>
 <div class="page-index">

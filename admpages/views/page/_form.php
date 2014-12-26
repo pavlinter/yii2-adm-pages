@@ -4,8 +4,6 @@ use kartik\checkbox\CheckboxX;
 use pavlinter\admpages\Module;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\web\JsExpression;
-use yii\widgets\ActiveForm;
 use pavlinter\adm\Adm;
 
 /* @var $this yii\web\View */
@@ -32,7 +30,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
         <div class="col-xs-12 col-sm-6 col-md-3">
             <?= $form->field($model, 'id_parent')->widget(\kartik\widgets\Select2::classname(), [
                 'data' => $parentsData,
-                'options' => ['placeholder' => Adm::t('','Select ...', ['dot' => false])],
+                'options' => ['placeholder' => Module::t('', 'Select ...', ['dot' => false])],
                 'pluginOptions' => [
                     'allowClear' => true,
                 ]
@@ -127,7 +125,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
 
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
-                            <?= \pavlinter\adm\Adm::widget('Redactor',[
+                            <?= Adm::widget('Redactor',[
                                 'form' => $form,
                                 'model'      => $modelLang,
                                 'attribute'  => '['.$id_language.']text'
@@ -153,8 +151,10 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
         </div>
 
         <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Module::t('admpage', 'Create') : Module::t('admpage', 'Update'), ['class' => 'btn btn-primary']) ?>
-    </div>
+            <?= Html::submitButton($model->isNewRecord ? Adm::t('', 'Create') : Adm::t('', 'Update'), ['class' => 'btn btn-primary']) ?>
+            <?= Adm::t('', 'Create', ['dot' => '.']) ?>
+            <?= Adm::t('', 'Update', ['dot' => '.']) ?>
+        </div>
 
     <?php Adm::end('ActiveForm'); ?>
 

@@ -1,6 +1,7 @@
 <?php
 
 use pavlinter\admpages\Module;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model \pavlinter\admpages\models\Page */
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $model->name;
         <div class="col-md-6">
             <?php
                 if ($model->image) {
-                    echo \yii\helpers\Html::img($model->image, ['class' => 'img-responsive']);
+                    echo Html::img($model->image, ['class' => 'img-responsive']);
                 }
             ?>
         </div>

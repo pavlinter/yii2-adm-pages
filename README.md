@@ -19,8 +19,6 @@ Yii2: Adm-Pages Модуль для Adm CMS
         'modules' => [
             'admpages' => [
                 'class' => 'pavlinter\admpages\Module',
-                'pageUrl' => ['/site/page'],
-                'mainPageUrl' => ['/site/main-page'],
                 'pageLayouts' => [
                    'page' => 'Page',
                    'page-image' => 'Page + image',
