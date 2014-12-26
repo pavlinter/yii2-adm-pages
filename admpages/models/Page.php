@@ -180,9 +180,9 @@ class Page extends \yii\db\ActiveRecord
     public function url($url = true, $id_language = null, $key = 'alias')
     {
         if ($url === true) {
-            $url = Module::getInstance()->pageUrl;
+            $url = ['/admpages/default/index'];
         } else if($url === null) {
-            $url = Module::getInstance()->mainPageUrl;
+            $url = ['/admpages/default/main'];
             $key = false;
         }
         return $this->getTranslation($id_language)->url($url, $key);

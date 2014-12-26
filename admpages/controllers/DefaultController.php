@@ -20,6 +20,7 @@ class DefaultController extends Controller
      */
     public function actionIndex($alias)
     {
+
         /* @var $module \pavlinter\admpages\Module */
         $module = Module::getInstance();
 
@@ -62,7 +63,7 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->controller->render('@vendor/pavlinter/yii2-adm-pages/admpages/views/default/' . $model->layout, [
+        return $this->render('@vendor/pavlinter/yii2-adm-pages/admpages/views/default/' . $model->layout, [
             'model' => $model,
         ]);
     }
@@ -104,7 +105,7 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->controller->render('@vendor/pavlinter/yii2-adm-pages/admpages/views/default/' . $model->layout, [
+        return $this->render('@vendor/pavlinter/yii2-adm-pages/admpages/views/default/' . $model->layout, [
             'model' => $model,
         ]);
     }
