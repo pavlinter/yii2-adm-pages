@@ -10,7 +10,7 @@ Yii::$app->i18n->disableDot();
 $this->title = Module::t('', 'Update Page: ') . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Module::t('', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = Module::t('', 'Update');
-Yii::$app->i18n->enableDot();
+Yii::$app->i18n->resetDot();
 ?>
 <div class="page-update">
 

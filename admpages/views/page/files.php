@@ -14,7 +14,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Module::t('', 'Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['update', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Module::t('', 'Files');
-Yii::$app->i18n->enableDot();
+Yii::$app->i18n->resetDot();
 
 Assets::register($this);
 Assets::addLangFile(Yii::$app->language, $this);
