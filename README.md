@@ -17,20 +17,20 @@ Yii2: Adm-Pages Модуль для Adm CMS
     'adm' => [
         ...
         'modules' => [
-            'admpages' => [
-                'class' => 'pavlinter\admpages\Module',
-                'pageLayouts' => [
-                   'page' => 'Page',
-                   'page-image' => 'Page + image',
-                ],
-                'pageRedirect' => [],
-                'pageTypes' => [],
-                'pageLayout' => '/main',
-                'closeDeletePage' => [] //id [2,130]
-            ],
-            ...
+            'admpages'
         ],
         ...
+    ],
+    'admpages' => [
+        'class' => 'pavlinter\admpages\Module',
+        'pageLayouts' => [
+           'page' => 'Page',
+           'page-image' => 'Page + image',
+        ],
+        'pageRedirect' => [],
+        'pageTypes' => [],
+        'pageLayout' => '/main',
+        'closeDeletePage' => [] //id [2,130]
     ],
     ...
 ],
