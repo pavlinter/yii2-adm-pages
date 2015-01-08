@@ -2,6 +2,7 @@
 
 namespace pavlinter\admpages;
 
+use pavlinter\adm\Adm;
 use pavlinter\adm\AdmBootstrapInterface;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -118,8 +119,8 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
     public function beforeAction($action)
     {
         if ($action->controller->id !== 'default') {
-            Yii::$app->getModule('adm'); //required load adm,if use adm layout
-            PageAsset::register(Yii::$app->getView());
+            $adm = Adm::register(); //required load adm,if use adm layout
+            PageAsset::register($adm->get('view'));
         }
         return parent::beforeAction($action);
     }
