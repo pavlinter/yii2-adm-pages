@@ -120,7 +120,7 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
     {
         if ($action->controller->id !== 'default') {
             $adm = Adm::register(); //required load adm,if use adm layout
-            PageAsset::register($adm->get('view'));
+            PageAsset::register(Yii::$app->getView());
         }
         return parent::beforeAction($action);
     }
