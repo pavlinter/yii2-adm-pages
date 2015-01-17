@@ -42,7 +42,7 @@ class DefaultController extends Controller
         ]);
 
 
-        if ($model === false) {
+        if (!$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -84,7 +84,7 @@ class DefaultController extends Controller
         ]);
 
 
-        if ($model === false) {
+        if (!$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
