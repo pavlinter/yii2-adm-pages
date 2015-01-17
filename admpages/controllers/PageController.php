@@ -2,6 +2,7 @@
 
 namespace pavlinter\admpages\controllers;
 
+use pavlinter\adm\Adm;
 use pavlinter\adm\filters\AccessControl;
 use pavlinter\admpages\Module;
 use Yii;
@@ -76,7 +77,6 @@ class PageController extends Controller
             \yii\helpers\FileHelper::createDirectory($dir);
         }
 
-
         return $this->render('files', [
             'model' => $model,
             'startPath' => $startPath,
@@ -106,7 +106,6 @@ class PageController extends Controller
      */
     public function actionCreate($id = null, $id_parent = null)
     {
-
         $model = Module::getInstance()->manager->createPage();
         $model->loadDefaultValues();
 
@@ -115,7 +114,8 @@ class PageController extends Controller
             if ($model->validateAll()) {
 
                 if ($model->saveAll(false)) {
-                    return $this->redirect(['files', 'id' => $model->id]);
+                    Yii::$app->getSession()->setFlash('success', Adm::t('','Data successfully inserted!'));
+                    return Adm::redirect(['update', 'id' => $model->id]);
                 }
             }
         } else {
@@ -126,8 +126,6 @@ class PageController extends Controller
                 $model->id_parent = $id_parent;
             }
         }
-
-
 
         return $this->render('create', [
             'model' => $model,
@@ -145,7 +143,8 @@ class PageController extends Controller
         $model = $this->findModel($id);
         if ($model->loadAll(Yii::$app->request->post()) && $model->validateAll()) {
             if ($model->saveAll(false)) {
-                return $this->redirect(['files', 'id' => $model->id]);
+                Yii::$app->getSession()->setFlash('success', Adm::t('','Data successfully changed!'));
+                return Adm::redirect(['update', 'id' => $model->id]);
             }
         }
 
@@ -164,6 +163,7 @@ class PageController extends Controller
     {
         if (!in_array($id, Module::getInstance()->closeDeletePage)) {
             $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', Adm::t('','Data successfully removed!'));
         }
         return $this->redirect(['index', 'id_parent' => 0]);
     }

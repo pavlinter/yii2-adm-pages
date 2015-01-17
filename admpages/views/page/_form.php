@@ -2,9 +2,11 @@
 
 use kartik\checkbox\CheckboxX;
 use pavlinter\admpages\Module;
+use pavlinter\buttons\InputButton;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use pavlinter\adm\Adm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
@@ -150,11 +152,44 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
             </div>
         </div>
 
-        <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? Adm::t('', 'Create') : Adm::t('', 'Update'), ['class' => 'btn btn-primary']) ?>
-            <?= Adm::t('', 'Create', ['dot' => '.']) ?>
-            <?= Adm::t('', 'Update', ['dot' => '.']) ?>
-        </div>
+    <div class="form-group">
+        <?= InputButton::widget([
+            'label' => $model->isNewRecord ? Adm::t('', 'Create', ['dot' => false]) : Adm::t('', 'Update', ['dot' => false]),
+            'options' => ['class' => 'btn btn-primary'],
+            'input' => 'adm-redirect',
+            'name' => 'redirect',
+            'formSelector' => $form,
+        ]);?>
+
+        <?php if ($model->isNewRecord) {?>
+            <?= InputButton::widget([
+                'label' => Adm::t('', 'Create and insert new', ['dot' => false]),
+                'options' => ['class' => 'btn btn-primary'],
+                'input' => 'adm-redirect',
+                'name' => 'redirect',
+                'value' => Url::to(['create']),
+                'formSelector' => $form,
+            ]);?>
+        <?php }?>
+
+        <?= InputButton::widget([
+            'label' => $model->isNewRecord ? Adm::t('', 'Create and list', ['dot' => false]) : Adm::t('', 'Update and list', ['dot' => false]),
+            'options' => ['class' => 'btn btn-primary'],
+            'input' => 'adm-redirect',
+            'name' => 'redirect',
+            'value' => Url::to(['index']),
+            'formSelector' => $form,
+        ]);?>
+
+        <?= InputButton::widget([
+            'label' => $model->isNewRecord ? Adm::t('', 'Create and files', ['dot' => false]) : Adm::t('', 'Update and files', ['dot' => false]),
+            'options' => ['class' => 'btn btn-primary'],
+            'input' => 'adm-redirect',
+            'name' => 'redirect',
+            'value' => Url::to(['files', 'id' => '{id}']),
+            'formSelector' => $form,
+        ]);?>
+    </div>
 
     <?php Adm::end('ActiveForm'); ?>
 

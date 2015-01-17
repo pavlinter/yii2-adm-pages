@@ -18,8 +18,7 @@ Yii::$app->i18n->resetDot();
 <div class="page-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    
     <p>
         <?= Html::a(Module::t('', 'Create Page'), ['create', 'id_parent' => $id_parent], ['class' => 'btn btn-primary']) ?>
 
@@ -167,7 +166,7 @@ Yii::$app->i18n->resetDot();
                         }
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                             'title' => Module::t('title', 'Delete', ['dot' => false]),
-                            'data-confirm' => Module::t('', 'Are you sure you want to delete this item?'),
+                            'data-confirm' => Module::t('', 'Are you sure you want to delete this item?', ['dot' => false]),
                             'data-method' => 'post',
                             'data-pjax' => '0',
                         ]);
