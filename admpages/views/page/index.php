@@ -18,7 +18,7 @@ Yii::$app->i18n->resetDot();
 <div class="page-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    
+
     <p>
         <?= Html::a(Module::t('', 'Create Page'), ['create', 'id_parent' => $id_parent], ['class' => 'btn btn-primary']) ?>
 
