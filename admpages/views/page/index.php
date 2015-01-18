@@ -24,7 +24,7 @@ Yii::$app->i18n->resetDot();
 
         <?= Html::a(Module::t('', 'All pages'), [''], ['class' => 'btn btn-primary']) ?>
 
-        <?= Html::a(Module::t('', 'Front pages'), ['','id_parent' => 0,], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('', 'Front pages'), ['','id_parent' => 0], ['class' => 'btn btn-primary']) ?>
 
         <?= Html::a('!', '#', ['class' => 'btn btn-primary btn-adm-nestable-view']) ?>
     </p>
@@ -35,27 +35,6 @@ Yii::$app->i18n->resetDot();
         'nestable' => $id_parent === false ? false : [
             'id' => 'pages-nestable-grid',
             'btn' => false, //hide btn
-            'buttonsTemplate' => '<div class="pull-right">{view} {update} {subpages} {files} {copy} {delete}</div>',
-            'buttons' => [
-                'subpages' => function ($url, $that) {
-                    return Html::a('<span class="fa fa-plus-circle"></span>', [
-                        '',
-                        'id_parent' => '{id}'
-                    ], [
-                        'title' => Module::t('', 'Sub pages', ['dot' => false]),
-                        'data-pjax' => '0',
-                    ]);
-                },
-                'files' => function ($url, $that) {
-                    return Html::a('<span class="fa fa-cloud-download"></span>', [
-                        'files',
-                        'id' => '{id}'
-                    ], [
-                        'title' => Module::t('', 'Files', ['dot' => false]),
-                        'data-pjax' => '0',
-                    ]);
-                },
-            ],
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
