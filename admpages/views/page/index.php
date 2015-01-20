@@ -26,7 +26,7 @@ Yii::$app->i18n->resetDot();
 
         <?= Html::a(Module::t('', 'Front pages'), ['','id_parent' => 0], ['class' => 'btn btn-primary']) ?>
 
-        <?= Html::a('!', '#', ['class' => 'btn btn-primary btn-adm-nestable-view']) ?>
+        <?= Html::a('!', '#', ['class' => 'btn btn-primary btn-adm-nestable-view' . ($id_parent === false ? ' hide' : '' )]) ?>
     </p>
 
     <?= Adm::widget('GridView',[
