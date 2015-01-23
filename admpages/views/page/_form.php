@@ -11,6 +11,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $id_parent integer */
 
 $parents = Module::getInstance()->manager->createPageQuery('find')->with(['translations']);
 if (!$model->isNewRecord) {
@@ -167,7 +168,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
                 'options' => ['class' => 'btn btn-primary'],
                 'input' => 'adm-redirect',
                 'name' => 'redirect',
-                'value' => Url::to(['create']),
+                'value' => Url::to(['create', 'id_parent' => $id_parent]),
                 'formSelector' => $form,
             ]);?>
         <?php }?>
@@ -177,7 +178,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
             'options' => ['class' => 'btn btn-primary'],
             'input' => 'adm-redirect',
             'name' => 'redirect',
-            'value' => Url::to(['index']),
+            'value' => Url::to(['index', 'id_parent' => $id_parent]),
             'formSelector' => $form,
         ]);?>
 
@@ -186,7 +187,7 @@ $parentsData = ArrayHelper::map($parents->all(), 'id', 'name');
             'options' => ['class' => 'btn btn-primary'],
             'input' => 'adm-redirect',
             'name' => 'redirect',
-            'value' => Url::to(['files', 'id' => '{id}']),
+            'value' => Url::to(['files', 'id' => '{id}', 'id_parent' => $id_parent]),
             'formSelector' => $form,
         ]);?>
     </div>

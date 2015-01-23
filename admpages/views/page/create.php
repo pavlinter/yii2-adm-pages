@@ -5,6 +5,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
+/* @var $id_parent integer */
 
 Yii::$app->i18n->disableDot();
 $this->title = Module::t('', 'Create Page');
@@ -18,6 +19,7 @@ Yii::$app->i18n->resetDot();
 
     <?= $this->render('_form', [
         'model' => $model,
+        'id_parent' => $id_parent,
     ]) ?>
 
 </div>

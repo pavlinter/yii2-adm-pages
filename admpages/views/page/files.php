@@ -7,6 +7,7 @@ use mihaildev\elfinder\Assets;
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
 /* @var $startPath string */
+/* @var $id_parent integer */
 
 Yii::$app->i18n->disableDot();
 $this->title = $model->name;
@@ -35,11 +36,11 @@ $this->registerJs('
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Module::t('', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Module::t('', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Module::t('', 'Update'), ['update', 'id' => $model->id, 'id_parent' => $id_parent], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Module::t('', 'Delete'), ['delete', 'id' => $model->id, 'id_parent' => $id_parent], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Module::t('', 'Are you sure you want to delete this item?'),
+                'confirm' => Module::t('', 'Are you sure you want to delete this item?', ['dot' => false]),
                 'method' => 'post',
             ],
         ]) ?>

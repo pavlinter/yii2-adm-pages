@@ -8,11 +8,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $id_parent integer */
 
 Yii::$app->i18n->disableDot();
 $this->title = Module::t('', 'Pages');
 $this->params['breadcrumbs'][] = $this->title;
 Yii::$app->i18n->resetDot();
+
 
 ?>
 <div class="page-index">
@@ -139,9 +141,27 @@ Yii::$app->i18n->resetDot();
                 'width' => '130px',
                 'template' => '{view} {update} {subpages} {files} {copy} {delete}',
                 'buttons' => [
+                    'update' => function ($url, $model, $key) {
+                        $url = ['update', 'id' => $model->id];
+                        if ($model->id_parent) {
+                            $url['id_parent'] = $model->id_parent;
+                        } else {
+                            $url['id_parent'] = 0;
+                        }
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                            'title' => Yii::t('yii', 'Update'),
+                            'data-pjax' => '0',
+                        ]);
+                    },
                     'delete' => function ($url, $model) {
                         if (in_array($model->id, Module::getInstance()->closeDeletePage)) {
                             return null;
+                        }
+                        $url = ['delete', 'id' => $model->id];
+                        if ($model->id_parent) {
+                            $url['id_parent'] = $model->id_parent;
+                        } else {
+                            $url['id_parent'] = 0;
                         }
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                             'title' => Module::t('title', 'Delete', ['dot' => false]),
@@ -160,7 +180,13 @@ Yii::$app->i18n->resetDot();
                         }
                     },
                     'copy' => function ($url, $model) {
-                        return Html::a('<span class="fa fa-copy"></span>', ['create', 'id' => $model->id], [
+                        $url = ['create', 'id' => $model->id];
+                        if ($model->id_parent) {
+                            $url['id_parent'] = $model->id_parent;
+                        } else {
+                            $url['id_parent'] = 0;
+                        }
+                        return Html::a('<span class="fa fa-copy"></span>', $url, [
                             'title' => Module::t('title', 'Copy', ['dot' => false]),
                             'data-pjax' => '0',
                         ]);

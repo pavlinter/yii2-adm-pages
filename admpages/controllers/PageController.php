@@ -43,7 +43,7 @@ class PageController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionFiles($id)
+    public function actionFiles($id, $id_parent = null)
     {
         $model = $this->findModel($id);
 
@@ -64,14 +64,22 @@ class PageController extends Controller
             \yii\helpers\FileHelper::createDirectory($dir);
         }
 
+
+        if (!$id_parent) {
+            $id_parent = 0;
+        }
+
         return $this->render('files', [
             'model' => $model,
             'startPath' => $startPath,
+            'id_parent' => $id_parent,
         ]);
     }
 
+
     /**
      * Lists all Page models.
+     * @param integer|bool $id_parent
      * @return mixed
      */
     public function actionIndex($id_parent = false)
@@ -86,9 +94,12 @@ class PageController extends Controller
         ]);
     }
 
+
     /**
      * Creates a new Page model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     * @param null|integer $id
+     * @param null|integer $id_parent
      * @return mixed
      */
     public function actionCreate($id = null, $id_parent = null)
@@ -102,7 +113,10 @@ class PageController extends Controller
 
                 if ($model->saveAll(false)) {
                     Yii::$app->getSession()->setFlash('success', Adm::t('','Data successfully inserted!'));
-                    return Adm::redirect(['update', 'id' => $model->id]);
+                    if (!$id_parent) {
+                        $id_parent = 0;
+                    }
+                    return Adm::redirect(['update', 'id' => $model->id, 'id_parent' => $id_parent]);
                 }
             }
         } else {
@@ -116,6 +130,7 @@ class PageController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'id_parent' => $id_parent,
         ]);
     }
 
@@ -123,20 +138,25 @@ class PageController extends Controller
      * Updates an existing Page model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
+     * @param null|integer $id_parent
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $id_parent = null)
     {
         $model = $this->findModel($id);
         if ($model->loadAll(Yii::$app->request->post()) && $model->validateAll()) {
             if ($model->saveAll(false)) {
                 Yii::$app->getSession()->setFlash('success', Adm::t('','Data successfully changed!'));
-                return Adm::redirect(['update', 'id' => $model->id]);
+                if (!$id_parent) {
+                    $id_parent = 0;
+                }
+                return Adm::redirect(['update', 'id' => $model->id, 'id_parent' => $id_parent]);
             }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'id_parent' => $id_parent,
         ]);
     }
 
@@ -144,15 +164,20 @@ class PageController extends Controller
      * Deletes an existing Page model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
+     * @param null|integer $id_parent
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $id_parent = null)
     {
         if (!in_array($id, Module::getInstance()->closeDeletePage)) {
             $this->findModel($id)->delete();
             Yii::$app->getSession()->setFlash('success', Adm::t('','Data successfully removed!'));
         }
-        return $this->redirect(['index', 'id_parent' => 0]);
+        $url = ['index', 'id_parent' => 0];
+        if ($id_parent !== null) {
+            $url['id_parent'] = $id_parent;
+        }
+        return $this->redirect($url);
     }
 
     /**
