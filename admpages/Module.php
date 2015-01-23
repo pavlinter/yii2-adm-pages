@@ -13,7 +13,9 @@ use yii\helpers\ArrayHelper;
 class Module extends \yii\base\Module implements AdmBootstrapInterface
 {
     public $controllerNamespace = 'pavlinter\admpages\controllers';
-
+    /**
+     * @var \Closure|array
+     */
     public $pageLayouts = [];
     /**
      *  'pageLayouts' => [
@@ -30,7 +32,9 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
      *  }
      */
     public $pageRedirect = [];
-
+    /**
+     * @var \Closure|array
+     */
     public $pageTypes = [];
 
     public $pageLayout = '/main';
@@ -49,10 +53,6 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
         $this->registerTranslations();
 
         $config = ArrayHelper::merge([
-            'pageTypes' => [
-                'page' => self::t('types','Pages', ['dot' => false]),
-                'main' => self::t('types','Main Page', ['dot' => false]),
-            ],
             'files' => [
                 'page' => [
                     'dirs' => [
@@ -67,10 +67,6 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
                     'startPath' => 'pages::{id}',
                 ],
             ],
-            'pageLayouts' => [
-                'page' => self::t('layouts','Page', ['dot' => false]),
-                'page-image' => self::t('layouts','Page + image', ['dot' => false]),
-            ],
             'components' => [
                 'manager' => [
                     'class' => 'pavlinter\admpages\ModelManager'
@@ -78,26 +74,49 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
             ],
         ], $config);
 
-        if ($config['pageLayouts']['page'] == false) {
-            unset($config['pageLayouts']['page']);
-        }
-        if ($config['pageLayouts']['page-image'] == false) {
-            unset($config['pageLayouts']['page-image']);
-        }
-        if ($config['files']['page'] == false) {
-            unset($config['files']['page']);
-        }
-        if ($config['files']['main'] == false) {
-            unset($config['files']['main']);
-        }
-
         parent::__construct($id, $parent, $config);
     }
 
     public function init()
     {
         parent::init();
-        // custom initialization code goes here
+        if ($this->pageLayouts instanceof \Closure) {
+            $this->pageLayouts = call_user_func($this->pageLayouts, $this);
+        }
+        if ($this->pageTypes instanceof \Closure) {
+            $this->pageTypes = call_user_func($this->pageTypes, $this);
+        }
+
+        if (!isset($this->pageTypes['page'])) {
+            $this->pageTypes['page'] = self::t('types', 'Pages', ['dot' => false]);
+        } else if($this->pageTypes['page'] === false) {
+            unset($this->pageTypes['page']);
+        }
+        if (!isset($this->pageTypes['main'])) {
+            $this->pageTypes['main'] = self::t('types', 'Main Page', ['dot' => false]);
+        } else if($this->pageTypes['main'] === false) {
+            unset($this->pageTypes['main']);
+        }
+
+        if (!isset($this->pageLayouts['page'])) {
+            $this->pageLayouts['page'] = self::t('layouts', 'Page', ['dot' => false]);
+        } else if($this->pageLayouts['page'] === false) {
+            unset($this->pageLayouts['page']);
+        }
+
+        if (!isset($this->pageLayouts['page-image'])) {
+            $this->pageLayouts['page-image'] = self::t('layouts', 'Page + image', ['dot' => false]);
+        } else if($this->pageLayouts['page-image'] === false) {
+            unset($this->pageLayouts['page-image']);
+        }
+
+        if ($this->files['page'] === false) {
+            unset($this->files['page']);
+        }
+
+        if ($this->files['main'] === false) {
+            unset($this->files['main']);
+        }
     }
 
     /**
