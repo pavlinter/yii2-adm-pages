@@ -6,6 +6,7 @@ use pavlinter\adm\Adm;
 use pavlinter\adm\filters\AccessControl;
 use pavlinter\admpages\Module;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -50,7 +51,7 @@ class PageController extends Controller
         $files = Module::getInstance()->files;
         $startPath = '';
         if (!isset($files[$model->type])) {
-            return $this->redirect(['index', 'id_parent' => 0]);
+            throw new InvalidConfigException('The "files" property for type(' . $model->type . ') must be set.');
         }
         if (isset($files[$model->type]['startPath'])) {
             $startPath = strtr($files[$model->type]['startPath'], [
