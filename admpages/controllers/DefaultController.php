@@ -4,6 +4,7 @@ namespace pavlinter\admpages\controllers;
 
 use pavlinter\admpages\Module;
 use Yii;
+use yii\base\InvalidRouteException;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -54,12 +55,21 @@ class DefaultController extends Controller
                 $params['modelPage'] = $model;
             }
             $route  = ArrayHelper::remove($params, 0);
-            $app = Yii::$app;
-            $result = $app->runAction($route, $params);
+
+            $parts = Yii::$app->createController($route);
+            if (is_array($parts)) {
+                /* @var $controller Controller */
+                list($controller, $actionID) = $parts;
+                $result = $controller->runAction($actionID, $params);
+            } else {
+                $id = Yii::$app->getUniqueId();
+                throw new InvalidRouteException('Unable to resolve the request "' . ($id === '' ? $route : $id . '/' . $route) . '".');
+            }
+
             if ($result instanceof \yii\web\Response) {
                 return $result;
             } else {
-                $response = $app->getResponse();
+                $response = Yii::$app->getResponse();
                 if ($result !== null) {
                     $response->data = $result;
                 }
@@ -100,12 +110,21 @@ class DefaultController extends Controller
                 $params['modelPage'] = $model;
             }
             $route  = ArrayHelper::remove($params, 0);
-            $app = Yii::$app;
-            $result = $app->runAction($route, $params);
+
+            $parts = Yii::$app->createController($route);
+            if (is_array($parts)) {
+                /* @var $controller Controller */
+                list($controller, $actionID) = $parts;
+                $result = $controller->runAction($actionID, $params);
+            } else {
+                $id = Yii::$app->getUniqueId();
+                throw new InvalidRouteException('Unable to resolve the request "' . ($id === '' ? $route : $id . '/' . $route) . '".');
+            }
+
             if ($result instanceof \yii\web\Response) {
                 return $result;
             } else {
-                $response = $app->getResponse();
+                $response = Yii::$app->getResponse();
                 if ($result !== null) {
                     $response->data = $result;
                 }
