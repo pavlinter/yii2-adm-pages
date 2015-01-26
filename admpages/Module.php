@@ -22,11 +22,11 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
      *   'contact' => 'Contact',
      *  ],
      *  'pageRedirect' => [
-     *   'contact' => ['site/contact'],
+     *   'contact' => ['site/contact'], or function($modelPage){ return ['site/contact', 'ownParamName' => $modelPage]}
      *  ],
      *
-     *  @param \pavlinter\admpages\models\Page $page
-     *  public function actionContact($page)
+     *  @param \pavlinter\admpages\models\Page $modelPage
+     *  public function actionContact($modelPage)
      *  {
      *
      *  }

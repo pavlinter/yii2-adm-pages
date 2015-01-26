@@ -48,8 +48,12 @@ class DefaultController extends Controller
 
         if (isset($module->pageRedirect[$model->layout])) {
             $params = $module->pageRedirect[$model->layout];
+            if ($params instanceof \Closure) {
+                $params = call_user_func($params, $model, $module);
+            } else {
+                $params['modelPage'] = $model;
+            }
             $route  = ArrayHelper::remove($params, 0);
-            $params['page'] = $model;
             $app = Yii::$app;
             $result = $app->runAction($route, $params);
             if ($result instanceof \yii\web\Response) {
@@ -90,8 +94,12 @@ class DefaultController extends Controller
 
         if (isset($module->pageRedirect[$model->layout])) {
             $params = $module->pageRedirect[$model->layout];
+            if ($params instanceof \Closure) {
+                $params = call_user_func($params, $model, $module);
+            } else {
+                $params['modelPage'] = $model;
+            }
             $route  = ArrayHelper::remove($params, 0);
-            $params['page'] = $model;
             $app = Yii::$app;
             $result = $app->runAction($route, $params);
             if ($result instanceof \yii\web\Response) {
