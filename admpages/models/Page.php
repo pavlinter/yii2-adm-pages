@@ -189,6 +189,21 @@ class Page extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param bool $scheme
+     * @param array $options
+     * @return string
+     */
+    public function urlTo($scheme = false, $options = [])
+    {
+        $options  = ArrayHelper::merge([
+            'url' => true,
+            'id_language' => null,
+            'key' => 'alias',
+        ], $options);
+        return \yii\helpers\Url::to($this->url($options['url'], $options['id_language'], $options['key']), $scheme);
+    }
+
+    /**
      * @param $id
      * @param array $config
      * @return array|bool|null|\yii\db\ActiveRecord
