@@ -2,7 +2,6 @@
 
 namespace pavlinter\admpages\models;
 
-use pavlinter\admpages\Module;
 use Yii;
 use pavlinter\translation\TranslationBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -91,14 +90,16 @@ class Page extends \yii\db\ActiveRecord
      */
     public function rules()
     {
+        /* @var \pavlinter\admpages\Module $module */
+        $module = Yii::$app->getModule('admpages');
         return [
             [['weight', 'id_parent'], 'default', 'value' => null],
             [['id_parent', 'weight', 'visible', 'active'], 'integer'],
             [['layout', 'type'], 'required'],
             [['layout', 'type'], 'string', 'max' => 50],
             [['date'], 'date', 'format' => 'yyyy-MM-dd HH:mm:ss'],
-            [['layout'], 'in', 'range' => array_keys(Module::getInstance()->pageLayouts)],
-            [['type'], 'in', 'range' => array_keys(Module::getInstance()->pageTypes)],
+            [['layout'], 'in', 'range' => array_keys($module->pageLayouts)],
+            [['type'], 'in', 'range' => array_keys($module->pageTypes)],
         ];
     }
 
@@ -218,11 +219,7 @@ class Page extends \yii\db\ActiveRecord
             'orderBy' => false,
         ], $config);
 
-
-
-        $pageTable = forward_static_call(array(Module::getInstance()->manager->pageClass, 'tableName'));
-        
-        $query = self::find()->from(['p' => $pageTable])->innerJoinWith(['translations']);
+        $query = self::find()->from(['p' => self::tableName()])->innerJoinWith(['translations']);
         if ($config['where'] === false) {
             $query->where(['p.id' => $id]);
         } else {
@@ -274,7 +271,9 @@ class Page extends \yii\db\ActiveRecord
      */
     public function getTranslations()
     {
-        return $this->hasMany(Module::getInstance()->manager->pageLangClass, ['page_id' => 'id'])->indexBy('language_id');
+        /* @var \pavlinter\admpages\Module $module */
+        $module = Yii::$app->getModule('admpages');
+        return $this->hasMany($module->manager->pageLangClass, ['page_id' => 'id'])->indexBy('language_id');
     }
 
     /**
@@ -282,13 +281,13 @@ class Page extends \yii\db\ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(Module::getInstance()->manager->pageClass, ['id' => 'id_parent']);
+        return $this->hasOne(self::className(), ['id' => 'id_parent']);
     }
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getChilds()
     {
-        return $this->hasMany(Module::getInstance()->manager->pageClass, ['id_parent' => 'id']);
+        return $this->hasMany(self::className(), ['id_parent' => 'id']);
     }
 }
