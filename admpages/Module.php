@@ -2,6 +2,7 @@
 
 namespace pavlinter\admpages;
 
+use Closure;
 use pavlinter\adm\Adm;
 use pavlinter\adm\AdmBootstrapInterface;
 use Yii;
@@ -14,7 +15,7 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
 {
     public $controllerNamespace = 'pavlinter\admpages\controllers';
     /**
-     * @var \Closure|array
+     * @var Closure|array
      */
     public $pageLayouts = [];
     /**
@@ -33,7 +34,7 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
      */
     public $pageRedirect = [];
     /**
-     * @var \Closure|array
+     * @var Closure|array
      */
     public $pageTypes = [];
 
@@ -80,10 +81,10 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
     public function init()
     {
         parent::init();
-        if ($this->pageLayouts instanceof \Closure) {
+        if ($this->pageLayouts instanceof Closure) {
             $this->pageLayouts = call_user_func($this->pageLayouts, $this);
         }
-        if ($this->pageTypes instanceof \Closure) {
+        if ($this->pageTypes instanceof Closure) {
             $this->pageTypes = call_user_func($this->pageTypes, $this);
         }
 
