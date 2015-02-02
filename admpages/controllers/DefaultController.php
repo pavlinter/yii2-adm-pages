@@ -33,7 +33,7 @@ class DefaultController extends Controller
             'where' => ['alias' => $alias],
             'url' => function ($model, $id_language, $language) {
                 if ($model->hasTranslation($id_language)) {
-                    $url = $model->url();
+                    $url = $model->url(true, $id_language);
                 } else {
                     $url = [''];
                 }
