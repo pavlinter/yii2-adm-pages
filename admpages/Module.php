@@ -95,7 +95,7 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
         }
 
         if (!isset($this->pageTypes['page'])) {
-            $this->pageTypes = ['page' => self::t('types', 'Pages', ['dot' => false])] + $this->pageTypes;
+            $this->pageTypes = ['page' => self::t('types', 'Page', ['dot' => false])] + $this->pageTypes;
         } else if($this->pageTypes['page'] === false) {
             unset($this->pageTypes['page']);
         }
@@ -107,7 +107,7 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
         }
 
         if (!isset($this->pageLayouts['page'])) {
-            $this->pageLayouts = ['Page' => self::t('layouts', 'Page', ['dot' => false])] + $this->pageLayouts;
+            $this->pageLayouts = ['page' => self::t('layouts', 'Page', ['dot' => false])] + $this->pageLayouts;
         } else if($this->pageLayouts['page'] === false) {
             unset($this->pageLayouts['page']);
         }
