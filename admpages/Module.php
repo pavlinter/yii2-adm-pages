@@ -88,27 +88,29 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
             $this->pageTypes = call_user_func($this->pageTypes, $this);
         }
 
-        if (!isset($this->pageTypes['page'])) {
-            $this->pageTypes['page'] = self::t('types', 'Pages', ['dot' => false]);
-        } else if($this->pageTypes['page'] === false) {
-            unset($this->pageTypes['page']);
-        }
         if (!isset($this->pageTypes['main'])) {
-            $this->pageTypes['main'] = self::t('types', 'Main Page', ['dot' => false]);
+            $this->pageTypes = ['main' => self::t('types', 'Main Page', ['dot' => false])] + $this->pageTypes;
         } else if($this->pageTypes['main'] === false) {
             unset($this->pageTypes['main']);
         }
 
-        if (!isset($this->pageLayouts['page'])) {
-            $this->pageLayouts['page'] = self::t('layouts', 'Page', ['dot' => false]);
-        } else if($this->pageLayouts['page'] === false) {
-            unset($this->pageLayouts['page']);
+        if (!isset($this->pageTypes['page'])) {
+            $this->pageTypes = ['page' => self::t('types', 'Pages', ['dot' => false])] + $this->pageTypes;
+        } else if($this->pageTypes['page'] === false) {
+            unset($this->pageTypes['page']);
         }
 
+
         if (!isset($this->pageLayouts['page-image'])) {
-            $this->pageLayouts['page-image'] = self::t('layouts', 'Page + image', ['dot' => false]);
+            $this->pageLayouts = ['page-image' => self::t('layouts', 'Page + image', ['dot' => false])] + $this->pageLayouts;
         } else if($this->pageLayouts['page-image'] === false) {
             unset($this->pageLayouts['page-image']);
+        }
+
+        if (!isset($this->pageLayouts['page'])) {
+            $this->pageLayouts = ['Page' => self::t('layouts', 'Page', ['dot' => false])] + $this->pageLayouts;
+        } else if($this->pageLayouts['page'] === false) {
+            unset($this->pageLayouts['page']);
         }
 
         if ($this->files['page'] === false) {
