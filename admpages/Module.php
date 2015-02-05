@@ -99,7 +99,7 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
         } else if($this->pageTypes['page'] === false) {
             unset($this->pageTypes['page']);
         }
-        
+
         if (!isset($this->pageLayouts['page-image'])) {
             $this->pageLayouts = ['page-image' => self::t('layouts', 'Page + image', ['dot' => false])] + $this->pageLayouts;
         } else if($this->pageLayouts['page-image'] === false) {
