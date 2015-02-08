@@ -124,6 +124,7 @@ class PageController extends Controller
             if($id){
                 $model = $this->findModel($id);
                 $model->setIsNewRecord(true);
+                $model->weight = null;
             } else if($id_parent){
                 $model->id_parent = $id_parent;
             }
