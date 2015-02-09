@@ -11,9 +11,11 @@ use pavlinter\adm\Manager;
 use Yii;
 
 /**
+ * @method \pavlinter\admpages\models\Page staticPage
  * @method \pavlinter\admpages\models\Page createPage
  * @method \pavlinter\admpages\models\Page createPageQuery
  * @method \pavlinter\admpages\models\PageSearch createPageSearch
+ * @method \pavlinter\admpages\models\PageLang staticPageLang
  * @method \pavlinter\admpages\models\PageLang createPageLang
  * @method \pavlinter\admpages\models\PageLang createPageLangQuery
  */
