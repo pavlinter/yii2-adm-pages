@@ -134,7 +134,7 @@ class Page extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if ($this->weight === null) {
-            $query = self::find()->select(['MAX(weight)']);
+            $query = static::find()->select(['MAX(weight)']);
             if (!$insert) {
                 $query->where(['!=', 'id', $this->id]);
             }
@@ -149,7 +149,7 @@ class Page extends \yii\db\ActiveRecord
      */
     public function shortText($onlyshort = false)
     {
-        $pos = strpos($this->text, self::$textBreak);
+        $pos = strpos($this->text, static::$textBreak);
         if ($pos !== false) {
             return \yii\helpers\StringHelper::truncate($this->text, $pos, null);
         }
@@ -165,7 +165,7 @@ class Page extends \yii\db\ActiveRecord
      */
     public function text($encoding = null)
     {
-        $pos = strpos($this->text, self::$textBreak);
+        $pos = strpos($this->text, static::$textBreak);
         if ($pos !== false) {
             return mb_substr($this->text, $pos, null, $encoding ?: Yii::$app->charset);
         }
@@ -219,7 +219,7 @@ class Page extends \yii\db\ActiveRecord
             'orderBy' => false,
         ], $config);
 
-        $query = self::find()->from(['p' => self::tableName()])->innerJoinWith(['translations']);
+        $query = static::find()->from(['p' => static::tableName()])->innerJoinWith(['translations']);
         if ($config['where'] === false) {
             $query->where(['p.id' => $id]);
         } else {
@@ -281,13 +281,13 @@ class Page extends \yii\db\ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(self::className(), ['id' => 'id_parent']);
+        return $this->hasOne(static::className(), ['id' => 'id_parent']);
     }
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getChilds()
     {
-        return $this->hasMany(self::className(), ['id_parent' => 'id']);
+        return $this->hasMany(static::className(), ['id_parent' => 'id']);
     }
 }

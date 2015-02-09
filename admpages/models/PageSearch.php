@@ -43,11 +43,11 @@ class PageSearch extends Page
     {
         /* @var \pavlinter\admpages\Module $module */
         $module = Yii::$app->getModule('admpages');
-        $pageTable      = self::tableName();
+        $pageTable      = static::tableName();
         $pageLangTable  = forward_static_call(array($module->manager->pageLangClass, 'tableName'));
 
 
-        $query = self::find()->from(['p' => $pageTable])
+        $query = static::find()->from(['p' => $pageTable])
             ->innerJoin(['l'=> $pageLangTable],'l.page_id=p.id AND l.language_id=:language_id',[':language_id' => Yii::$app->getI18n()->getId()]);
 
         $loadParams = $this->load($params);
