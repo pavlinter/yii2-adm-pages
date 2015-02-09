@@ -107,6 +107,7 @@ class PageController extends Controller
     {
         $model = Module::getInstance()->manager->createPage();
         $model->loadDefaultValues();
+        $model->setLangScenario('create-page-lang');
 
         $data = Yii::$app->request->post();
         if ($model->loadAll($data)) {
@@ -146,6 +147,7 @@ class PageController extends Controller
     public function actionUpdate($id, $id_parent = null)
     {
         $model = $this->findModel($id);
+        $model->setLangScenario('update-page-lang');
         if ($model->loadAll(Yii::$app->request->post()) && $model->validateAll()) {
             if ($model->saveAll(false)) {
                 Yii::$app->getSession()->setFlash('success', Adm::t('','Data successfully changed!'));
@@ -186,7 +188,7 @@ class PageController extends Controller
      * Finds the Page model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Page the loaded model
+     * @return \pavlinter\admpages\models\Page the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

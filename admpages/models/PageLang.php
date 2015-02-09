@@ -51,7 +51,8 @@ class PageLang extends \yii\db\ActiveRecord
             [['keywords'], 'string', 'max' => 250],
             [['alias'], 'match', 'pattern' => '/^([A-Za-z0-9_-])+$/'],
             [['alias'], 'unique', 'filter' => function ($query) {
-                if (!$this->isNewRecord) {
+                if (!$this->isNewRecord || $this->scenario == 'update-page-lang') {
+                    $query->andWhere(['=', 'language_id', $this->language_id]);
                     $query->andWhere(['!=', 'page_id', $this->page_id]);
                 }
                 return $query;
@@ -65,6 +66,7 @@ class PageLang extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
+        $scenarios['update-page-lang'] = $scenarios['create-page-lang'] = $scenarios[self::SCENARIO_DEFAULT];
         return $scenarios;
     }
     /**
