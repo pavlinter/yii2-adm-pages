@@ -65,7 +65,7 @@ class PageSearch extends Page
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'weight' => SORT_ASC,
+                    'weight' => SORT_DESC,
                 ],
             ],
         ]);

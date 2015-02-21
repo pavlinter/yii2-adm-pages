@@ -37,9 +37,10 @@ Yii::$app->i18n->resetDot();
         'nestable' => $id_parent === false ? false : [
             'id' => 'pages-nestable-grid',
             'btn' => false, //hide btn
+            'orderBy' => SORT_DESC,
         ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'kartik\grid\SerialColumn'],
 
             [
                 'attribute' => 'id_parent',
@@ -123,7 +124,7 @@ Yii::$app->i18n->resetDot();
                 'hAlign' => 'center',
             ],
             [
-                'class' => '\kartik\grid\BooleanColumn',
+                'class' => 'kartik\grid\BooleanColumn',
                 'attribute' => 'active',
                 'width' => '50px',
                 'vAlign' => 'middle',
@@ -137,7 +138,7 @@ Yii::$app->i18n->resetDot();
                 ],
             ],
             [
-                'class' => '\kartik\grid\ActionColumn',
+                'class' => 'kartik\grid\ActionColumn',
                 'width' => '130px',
                 'template' => '{view} {update} {subpages} {files} {copy} {delete}',
                 'buttons' => [
