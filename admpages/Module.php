@@ -13,6 +13,8 @@ use yii\helpers\ArrayHelper;
  */
 class Module extends \yii\base\Module implements AdmBootstrapInterface
 {
+    static $layoutAliases;
+
     public $controllerNamespace = 'pavlinter\admpages\controllers';
     /**
      * @var Closure|array

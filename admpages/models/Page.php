@@ -267,6 +267,66 @@ class Page extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param $layout
+     * @param array $options
+     * @return array
+     * @throws \Exception
+     */
+    public static function urlLayout($layout, $options = [])
+    {
+        /* @var $module \pavlinter\admpages\Module */
+        $module = Yii::$app->getModule('admpages');
+
+        $options  = ArrayHelper::merge([
+            'url' => true,
+            'key' => 'alias',
+        ], $options);
+
+        $url = ['/admpages/default/index'];
+        if ($options['url'] !== true) {
+            $url = $options['url'];
+        }
+        if ($module::$layoutAliases === null) {
+            $layouts = Yii::$app->cache->get('admpagesUrlLayout');
+            if ($layouts === false) {
+                $layouts =  static::find()->from(['p' => static::tableName()])->select(['l.alias', 'p.layout'])
+                    ->innerJoin(['l'=> PageLang::tableName()],'l.page_id=p.id AND l.language_id=:language_id',[':language_id' => Yii::$app->getI18n()->getId()])
+                    ->where(['p.active' => 1])->groupBy('p.layout')->indexBy('layout')->all();
+                $layouts = ArrayHelper::map($layouts, 'layout', 'alias');
+                $dependency = new \yii\caching\DbDependency([
+                    'sql' => 'SELECT MAX(updated_at) FROM ' . static::tableName(),
+                ]);
+                Yii::$app->cache->set('admpagesUrlLayout', $layouts, 86400, $dependency);
+            }
+            $module::$layoutAliases = $layouts;
+        }
+        if (isset($module::$layoutAliases[$layout])) {
+            $url[$options['key']] = $module::$layoutAliases[$layout];
+        } else {
+            $url = null;
+        }
+        return $url;
+    }
+
+    /**
+     * @param $layout
+     * @param bool $scheme
+     * @param array $options
+     * @return string
+     */
+    public static function urlToLayout($layout, $scheme = false, $options = [])
+    {
+        $options  = ArrayHelper::merge([
+            'defaultUrl' => '/',
+        ], $options);
+        $url = static::urlLayout($layout, $options);
+        if ($url === null) {
+            $url = $options['defaultUrl'];
+        }
+        return \yii\helpers\Url::to($url, $scheme);
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getTranslations()

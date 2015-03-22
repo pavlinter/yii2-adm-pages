@@ -57,4 +57,6 @@ yii migrate --migrationPath=@vendor/pavlinter/yii2-adm-pages/admpages/migrations
 -------------
 ```php
 echo Html::a('My-Page',['/admpages/default/index', 'alias' => 'My-Page']);
+
+echo Page::urlToLayout('contact'); //Возращяет ссылку на страницу, где layout contact
 ```
