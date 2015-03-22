@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @package yii2-adm-pages
+ * @author Pavels Radajevs <pavlinter@gmail.com>
+ * @copyright Copyright &copy; Pavels Radajevs <pavlinter@gmail.com>, 2015
+ * @version 1.0.1
+ */
+
 namespace pavlinter\admpages;
 
 use Closure;
