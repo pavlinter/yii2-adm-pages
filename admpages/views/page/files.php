@@ -21,6 +21,8 @@ Assets::register($this);
 Assets::addLangFile(Yii::$app->language, $this);
 
 $this->registerJs('
+    var btn = $.fn.button.noConflict();
+    $.fn.btn = btn;
     $("#elfinder").elfinder({
         url  : "'.\yii\helpers\Url::to(['/adm/elfinder/connect', 'startPath' => $startPath]).'",
         lang : "'.Yii::$app->language.'",
