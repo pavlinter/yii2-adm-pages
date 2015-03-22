@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @package yii2-adm-pages
- * @author Pavels Radajevs <pavlinter@gmail.com>
- * @copyright Copyright &copy; Pavels Radajevs <pavlinter@gmail.com>, 2015
- * @version 1.0.1
- */
-
 namespace pavlinter\admpages\controllers;
 
 use pavlinter\admpages\Module;
@@ -49,18 +42,21 @@ class DefaultController extends Controller
             },
         ]);
 
-
         if (!$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         if (isset($module->pageRedirect[$model->layout])) {
-            $params = $module->pageRedirect[$model->layout];
-            if ($params instanceof \Closure) {
-                $params = call_user_func($params, $model, $module);
+
+            list(,$params) = Yii::$app->request->resolve();
+            $newParams = $module->pageRedirect[$model->layout];
+
+            if ($newParams instanceof \Closure) {
+                $newParams = call_user_func($newParams, $model, $module);
             } else {
-                $params['modelPage'] = $model;
+                $newParams['modelPage'] = $model;
             }
+            $params = ArrayHelper::merge($params, $newParams);
             $route  = ArrayHelper::remove($params, 0);
 
             $parts = Yii::$app->createController($route);
