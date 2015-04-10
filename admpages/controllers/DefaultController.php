@@ -37,8 +37,10 @@ class DefaultController extends Controller
                 } else {
                     $url = [''];
                 }
-                $url['lang'] = $language[Yii::$app->getI18n()->langColCode];
-                return Yii::$app->getUrlManager()->createUrl($url);
+                if (is_array($url)) {
+                    $url['lang'] = $language[Yii::$app->getI18n()->langColCode];
+                }
+                return \yii\helpers\Url::to($url);
             },
         ]);
 
