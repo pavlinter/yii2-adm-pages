@@ -219,7 +219,6 @@ class Page extends \yii\db\ActiveRecord
     public static function get($id, $config = [])
     {
         $config = ArrayHelper::merge([
-            'type' => 'page',
             'setLanguageUrl' => true,
             'registerMetaTag' => true,
             'where' => false,
