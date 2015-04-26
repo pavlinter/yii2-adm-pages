@@ -1,13 +1,16 @@
 <?php
 
 use pavlinter\admpages\Module;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use mihaildev\elfinder\Assets;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Page */
 /* @var $startPath string */
 /* @var $id_parent integer */
+/* @var $elfinderData array */
 
 Yii::$app->i18n->disableDot();
 $this->title = $model->name;
@@ -24,14 +27,12 @@ $this->registerJs('
     var btn = $.fn.button.noConflict();
     $.fn.btn = btn;
     $("#elfinder").elfinder({
-        url  : "'.\yii\helpers\Url::to(['/adm/elfinder/connect', 'startPath' => $startPath]).'",
+        url  : "'. Url::to(ArrayHelper::merge(['/adm/elfinder/connect', 'startPath' => $startPath], $elfinderData)).'",
         lang : "'.Yii::$app->language.'",
         customData: {"'.Yii::$app->request->csrfParam.'":"'.Yii::$app->request->csrfToken.'"},
         rememberLastDir : false,
     });
 ');
-
-
 ?>
 <div class="product-files">
 

@@ -69,12 +69,18 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
                         '@webroot/files/pages/{id}/gallery'// {id} - id page
                     ],
                     'startPath' => 'pages::{id}', // where :: replace to /
+                    'maxWidth' => 1500,
+                    'maxHeight' => 1500,
+                    'watermark' => 0, //see https://github.com/pavlinter/yii2-app-core/blob/master/core/elfinder/views/connect.php#L40
                 ],
                 'main' => [
                     'dirs' => [
                         '@webroot/files/pages/{id}/gallery'
                     ],
                     'startPath' => 'pages::{id}',
+                    'maxWidth' => 1500,
+                    'maxHeight' => 1500,
+                    'watermark' => 0,
                 ],
             ],
             'components' => [

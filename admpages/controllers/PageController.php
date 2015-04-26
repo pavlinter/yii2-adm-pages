@@ -77,10 +77,17 @@ class PageController extends Controller
             $id_parent = 0;
         }
 
+        $elfinderData = []; //for https://github.com/pavlinter/yii2-app-core
+        $elfinderData['w'] = isset($files[$model->type]['maxWidth']) ? $files[$model->type]['maxWidth'] : 0;
+        $elfinderData['h'] = isset($files[$model->type]['maxHeight']) ? $files[$model->type]['maxWidth'] : 0;
+        $elfinderData['watermark'] = isset($files[$model->type]['watermark']) && $files[$model->type]['watermark']? 1 : 0;
+
+
         return $this->render('files', [
             'model' => $model,
             'startPath' => $startPath,
             'id_parent' => $id_parent,
+            'elfinderData' => $elfinderData,
         ]);
     }
 
