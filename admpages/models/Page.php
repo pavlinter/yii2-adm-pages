@@ -4,7 +4,7 @@
  * @package yii2-adm-pages
  * @author Pavels Radajevs <pavlinter@gmail.com>
  * @copyright Copyright &copy; Pavels Radajevs <pavlinter@gmail.com>, 2015
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 namespace pavlinter\admpages\models;
@@ -40,8 +40,8 @@ use yii\helpers\ArrayHelper;
  * @property integer $visible
  * @property integer $active
  * @property string $date
- * @property string created_at
- * @property string updated_at
+ * @property string $created_at
+ * @property string $updated_at
  *
  * Translation
  * @property string $name
