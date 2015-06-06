@@ -40,6 +40,8 @@ use yii\helpers\ArrayHelper;
  * @property integer $visible
  * @property integer $active
  * @property string $date
+ * @property string created_at
+ * @property string updated_at
  *
  * Translation
  * @property string $name
@@ -174,7 +176,7 @@ class Page extends \yii\db\ActiveRecord
     {
         $pos = strpos($this->text, static::$textBreak);
         if ($pos !== false) {
-            return mb_substr($this->text, $pos, null, $encoding ?: Yii::$app->charset);
+            return mb_substr($this->text, $pos + strlen(static::$textBreak), null, Yii::$app->charset);
         }
         return $this->text;
     }
