@@ -299,7 +299,7 @@ class Page extends \yii\db\ActiveRecord
             if ($layouts === false) {
                 $layouts =  static::find()->from(['p' => static::tableName()])->select(['l.alias', 'p.layout'])
                     ->innerJoin(['l'=> PageLang::tableName()],'l.page_id=p.id AND l.language_id=:language_id',[':language_id' => Yii::$app->getI18n()->getId()])
-                    ->where(['p.active' => 1])->groupBy('p.layout')->indexBy('layout')->all();
+                    ->where(['p.active' => 1])->groupBy('p.layout')->all();
                 $layouts = ArrayHelper::map($layouts, 'layout', 'alias');
                 $dependency = new \yii\caching\DbDependency([
                     'sql' => 'SELECT MAX(updated_at) FROM ' . static::tableName(),
