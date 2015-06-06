@@ -335,6 +335,67 @@ class Page extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param $id
+     * @param array $options
+     * @return array|null
+     */
+    public static function urlId($id, $options = [])
+    {
+        /* @var $module \pavlinter\admpages\Module */
+        $module = Yii::$app->getModule('admpages');
+
+        $options  = ArrayHelper::merge([
+            'url' => true,
+            'key' => 'alias',
+        ], $options);
+
+        $url = ['/admpages/default/index'];
+        if ($options['url'] !== true) {
+            $url = $options['url'];
+        }
+
+        if ($module::$idAliases === null) {
+            $aliases = Yii::$app->cache->get('admpagesUrlId');
+            if ($aliases === false) {
+                $aliases =  static::find()->from(['p' => static::tableName()])->select(['l.alias', 'p.id'])
+                    ->innerJoin(['l'=> PageLang::tableName()],'l.page_id=p.id AND l.language_id=:language_id',[':language_id' => Yii::$app->getI18n()->getId()])
+                    ->where(['p.active' => 1])->all();
+                $aliases = ArrayHelper::map($aliases, 'id', 'alias');
+                $dependency = new \yii\caching\DbDependency([
+                    'sql' => 'SELECT MAX(updated_at) FROM ' . static::tableName(),
+                ]);
+                Yii::$app->cache->set('admpagesUrlId', $aliases, 86400, $dependency);
+            }
+            $module::$idAliases = $aliases;
+        }
+
+        if (isset($module::$idAliases[$id])) {
+            $url[$options['key']] = $module::$idAliases[$id];
+        } else {
+            $url = null;
+        }
+        return $url;
+    }
+
+    /**
+     * @param $id
+     * @param bool $scheme
+     * @param array $options
+     * @return string
+     */
+    public static function urlToId($id, $scheme = false, $options = [])
+    {
+        $options  = ArrayHelper::merge([
+            'defaultUrl' => '/',
+        ], $options);
+        $url = static::urlId($id, $options);
+        if ($url === null) {
+            $url = $options['defaultUrl'];
+        }
+        return \yii\helpers\Url::to($url, $scheme);
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getTranslations()

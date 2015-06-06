@@ -22,6 +22,8 @@ class Module extends \yii\base\Module implements AdmBootstrapInterface
 {
     static $layoutAliases;
 
+    static $idAliases;
+
     public $controllerNamespace = 'pavlinter\admpages\controllers';
     /**
      * @var Closure|array
