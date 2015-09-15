@@ -95,7 +95,10 @@ Yii::$app->i18n->resetDot();
                     }
                 },
                 'filterWidgetOptions' => [
-                    'pluginOptions' => ['allowClear' =>true ],
+                    'pluginOptions' => [
+                        'width' => '100px',
+                        'allowClear' => true,
+                    ],
                 ],
                 'filterInputOptions' => ['placeholder' => Module::t('','Select ...', ['dot' => false])],
                 'format' => 'raw'
@@ -112,7 +115,10 @@ Yii::$app->i18n->resetDot();
                     }
                 },
                 'filterWidgetOptions' => [
-                    'pluginOptions' => ['allowClear' =>true ],
+                    'pluginOptions' => [
+                        'width' => '100px',
+                        'allowClear' => true,
+                    ],
                 ],
                 'filterInputOptions' => ['placeholder' => Module::t('','Select ...', ['dot' => false])],
                 'format' => 'raw'
@@ -133,7 +139,8 @@ Yii::$app->i18n->resetDot();
                 'filterWidgetOptions' => [
                     'options' => ['placeholder' => Module::t('','Select ...', ['dot' => false])],
                     'pluginOptions' => [
-                        'allowClear' => true
+                        'width' => '100px',
+                        'allowClear' => true,
                     ],
                 ],
             ],
